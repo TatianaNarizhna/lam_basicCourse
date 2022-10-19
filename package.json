@@ -1,0 +1,21 @@
+{
+  "name": "lam_basiccourse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "interactiveSort.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TatianaNarizhna/lam_basicCourse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TatianaNarizhna/lam_basicCourse/issues"
+  },
+  "homepage": "https://github.com/TatianaNarizhna/lam_basicCourse#readme"
+}

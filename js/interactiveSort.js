@@ -1,27 +1,64 @@
-import { createInterface } from 'readline';
+import readline from 'readline';
 
-var rl = createInterface({
+const rlInterface = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-rl.write("Type 'help' for commands\n");
-rl.write('Square numbers:\n');
+// function foo(mess) {
+//   return new Promise((resolve, reject) => {
+//     if (mess) {
+//       resolve(mess);
+//       //   resolve('How would you like to sort');
+//     }
+//     reject('Enter the words');
+//   });
+// }
 
-function createPayer(number, callback) {
-  rl.question('Enter player ' + number + ' name? ', function (answer) {
-    var player = new Player(answer);
+// const promisFoo = foo('hi 5 move');
 
-    // Call the callback function once the player is created.
-    callback(player);
-  });
-}
+// promisFoo.then(onFullField).catch(onReject);
 
-createPayer(1, function (player1) {
-  createPayer(2, function (player2) {
-    console.log('logging name after making players' + player1.name);
-    console.log('logging name after making players' + player2.name);
+// function onFullField(result) {
+//   console.log(result);
+// }
 
-    // Then call player logic you have from in here.
-  });
-});
+// function onReject(error) {
+//   console.log(error);
+// }
+
+// const func = mess => {
+// return Promise.resolve(`${mess}`)
+// }
+// mess('jj 5 move').then(onFullField)
+
+//1 const promise = new Promise((resolve, reject) => {});
+
+// promise
+//   .then(result => {
+//     return result;
+//   })
+//   .then();
+
+// 2 promise.then(onFullField, onReject);
+
+// function onFullField(result) {}
+
+// function onReject(error) {}
+
+// const readline = require('readline').createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
+
+// readline.question('какое у вас время (в часах)?', time => {
+//   if (time >= 6 && time < 12) {
+//     console.log('Доброе утро');
+//   } else if (time >= 12 && time < 18) {
+//     console.log('Добрый день');
+//   } else {
+//     console.log('Добрый вечер');
+//   }
+
+//   readline.close();
+// });
