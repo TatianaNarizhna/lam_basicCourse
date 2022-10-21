@@ -1,50 +1,67 @@
+// import * as readline from 'node:readline/promises';
+// const readline = require('readline');
+// const fs = require('fs').promises;
+
 import readline from 'readline';
+
+let answerArr = [];
+
+const messageObj = {
+  1: 'Sort alphabetically',
+  2: 'Sort numbers from smallest to largest',
+  3: 'Sort numbers from largest to smallest',
+  4: 'Sort words by quantity of letters',
+  5: 'Sort only unique words',
+};
+
+const messageText = ` How do you want to sort them:
+ 1.Sort alphabetically.
+ 2.Sort numbers from smallest to largest.
+ 3.Sort numbers from largest to smallest.
+ 4.Sort words by quantity of letters.
+ 5.Sort only unique words.
+ 
+ Select (1-5) and press ENTER:
+ `;
 
 const rlInterface = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-// function foo(mess) {
-//   return new Promise((resolve, reject) => {
-//     if (mess) {
-//       resolve(mess);
-//       //   resolve('How would you like to sort');
-//     }
-//     reject('Enter the words');
-//   });
-// }
+rlInterface.question(
+  'Please, enter a several words, dividing them in space:',
+  userAnswer,
+);
 
-// const promisFoo = foo('hi 5 move');
+function userAnswer(data) {
+  //   console.log('How do you want to sort them?');
+  answerArr.push(data.trim());
+  console.log(answerArr);
 
-// promisFoo.then(onFullField).catch(onReject);
+  rlInterface.setPrompt(messageText);
+  rlInterface.prompt();
 
-// function onFullField(result) {
-//   console.log(result);
-// }
+  //   rlInterface.question(messageText);
 
-// function onReject(error) {
-//   console.log(error);
-// }
+  rlInterface.on('line', function (saying) {
+    if (saying.toLowerCase().trim() === 'exit') {
+      rlInterface.close();
+    } else {
+      rlInterface.on('line', userInput => {
+        if (userInput.trim() === 1) {
+          console.log('bom');
+        }
+      });
+    }
+  });
+}
 
-// const func = mess => {
-// return Promise.resolve(`${mess}`)
-// }
-// mess('jj 5 move').then(onFullField)
+rlInterface.on('close', () => {
+  console.log('Good bye');
+});
 
-//1 const promise = new Promise((resolve, reject) => {});
-
-// promise
-//   .then(result => {
-//     return result;
-//   })
-//   .then();
-
-// 2 promise.then(onFullField, onReject);
-
-// function onFullField(result) {}
-
-// function onReject(error) {}
+// 'How do you want to sort them?'
 
 // const readline = require('readline').createInterface({
 //   input: process.stdin,
