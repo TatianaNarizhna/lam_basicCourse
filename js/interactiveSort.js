@@ -4,16 +4,6 @@
 
 import readline from 'readline';
 
-let answerArr = [];
-
-const messageObj = {
-  1: 'Sort alphabetically',
-  2: 'Sort numbers from smallest to largest',
-  3: 'Sort numbers from largest to smallest',
-  4: 'Sort words by quantity of letters',
-  5: 'Sort only unique words',
-};
-
 const messageText = ` How do you want to sort them:
  1.Sort alphabetically.
  2.Sort numbers from smallest to largest.
@@ -23,6 +13,22 @@ const messageText = ` How do you want to sort them:
  
  Select (1-5) and press ENTER:
  `;
+
+let messageObj = {
+  answerArr: '',
+  alphabeticallySort() {
+    const sorted = [...this.answerArr].sort((a, b) => a.localeCompare(b));
+    return sorted;
+  },
+  smallerNumSort() {
+    const numArr = this.answerArr.map(el => +el);
+    return numArr.sort((a, b) => a - b);
+  },
+  biggerNumSort() {
+    const numArr = this.answerArr.map(el => +el);
+    return numArr.sort((a, b) => b - a);
+  },
+};
 
 const rlInterface = readline.createInterface({
   input: process.stdin,
@@ -35,27 +41,39 @@ rlInterface.question(
 );
 
 function userAnswer(data) {
-  //   console.log('How do you want to sort them?');
-  answerArr.push(data.trim());
-  console.log(answerArr);
+  const dataTrim = data.trim();
+  messageObj.answerArr = dataTrim.split(' ');
+  console.log(messageObj.answerArr);
 
   rlInterface.setPrompt(messageText);
   rlInterface.prompt();
 
-  //   rlInterface.question(messageText);
-
-  rlInterface.on('line', function (saying) {
-    if (saying.toLowerCase().trim() === 'exit') {
-      rlInterface.close();
-    } else {
-      rlInterface.on('line', userInput => {
-        if (userInput.trim() === 1) {
-          console.log('bom');
-        }
-      });
+  rlInterface.on('line', userInput => {
+    console.log(userInput);
+    if (userInput.trim() === '1') {
+      console.log(messageObj.alphabeticallySort());
+    } else if (userInput.trim() === '2') {
+      console.log(messageObj.smallerNumSort());
+    } else if (userInput.trim() === '3') {
+      console.log(messageObj.biggerNumSort());
     }
   });
+
+  //   rlInterface.question(messageText);
 }
+
+// rlInterface.on('line', function (saying) {
+//   if (saying.toLowerCase().trim() === 'exit') {
+//     rlInterface.close();
+//   } else {
+//     rlInterface.on('line', userInput => {
+//       console.log(userInput);
+//       if (userInput.trim() === 1) {
+//         console.log('bom');
+//       }
+//     });
+//   }
+// });
 
 rlInterface.on('close', () => {
   console.log('Good bye');
