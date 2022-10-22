@@ -28,6 +28,24 @@ let messageObj = {
     const numArr = this.answerArr.map(el => +el);
     return numArr.sort((a, b) => b - a);
   },
+  lettersSort() {
+    const sorted = [...this.answerArr];
+
+    for (let j = 0; j < sorted.length; j++) {
+      for (let i = 0; i < sorted.length - 1; i++) {
+        if (sorted[i].length > sorted[i + 1].length) {
+          let temp = sorted[i];
+          sorted[i] = sorted[i + 1];
+          sorted[i + 1] = temp;
+        }
+      }
+    }
+    return sorted;
+  },
+
+  uniqueSort() {
+    return this.answerArr.filter((el, index, arr) => arr.indexOf(el) === index);
+  },
 };
 
 const rlInterface = readline.createInterface({
@@ -49,13 +67,17 @@ function userAnswer(data) {
   rlInterface.prompt();
 
   rlInterface.on('line', userInput => {
-    console.log(userInput);
+    console.log(typeof userInput);
     if (userInput.trim() === '1') {
       console.log(messageObj.alphabeticallySort());
     } else if (userInput.trim() === '2') {
       console.log(messageObj.smallerNumSort());
     } else if (userInput.trim() === '3') {
       console.log(messageObj.biggerNumSort());
+    } else if (userInput.trim() === '4') {
+      console.log(messageObj.lettersSort());
+    } else if (userInput.trim() === '5') {
+      console.log(messageObj.uniqueSort());
     }
   });
 
