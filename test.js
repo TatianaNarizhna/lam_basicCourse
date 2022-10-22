@@ -1,41 +1,26 @@
-let messageObj = {
-  answerArr: ['aaaa', 'ggg', 'f', '5', '5', '8'],
+// let messageObj = {
+//   answerArr: ['aaaa', 'ggg', 'f', 'f', '5', '5', '8'],
 
-  foo() {
-    let res = [...this.answerArr];
-    console.log(res);
+//   foo() {
+//     let res = [...this.answerArr];
+//     const aaa = [];
 
-    const numArr = this.answerArr.map(el => +el);
-    console.log(numArr);
+//     return this.answerArr.map(el => {
+//       el = +el;
+//       console.log(typeof el);
 
-    // return numArr.filter((el, index, arr) => arr.indexOf(el) === index);
+//       if ('NaN') {
+//         aaa.push(+el);
+//       }
+//       console.log(aaa);
+//     });
+//   },
+// };
 
-    // for (let index = 0; index < this.answerArr.length - 1; index++) {
-    //   // const element = array[index];
-    //   let a = this.answerArr[index].length;
-    //   let b = this.answerArr[index + 1].length;
-    //   console.log(a, b);
+// console.log(messageObj.foo());
 
-    //   if (a > b) {
-    //     let temp = a;
-    //     a = b;
-    //     b = temp;
-    //   }
-    //   this.answerArr[index] = a;
-    //   this.answerArr[index + 1] = b;
-    // }
-    // console.log(this.answerArr);
+// Здесь вы увидите в консоли объекты
 
-    // return this.answerArr;
-    // const arr = [...this.answerArr].map(el => {
-    //   let a = el.length;
-    //   b = [el.length] + 1;
-    //   console.log(a, b);
-    // });
-  },
-};
-
-console.log(messageObj.foo());
 // const ooo = Number('2');
 // console.log(typeof ooo);
 
