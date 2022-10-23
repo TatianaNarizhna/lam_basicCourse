@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/TatianaNarizhna/lam_basicCourse/issues"
   },
-  "homepage": "https://github.com/TatianaNarizhna/lam_basicCourse#readme"
+  "homepage": "https://github.com/TatianaNarizhna/lam_basicCourse#readme",
+  "dependencies": {
+    "inquirer": "^9.1.4"
+  }
 }
