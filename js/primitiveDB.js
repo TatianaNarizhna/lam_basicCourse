@@ -1,5 +1,7 @@
 import inquirer from 'inquirer';
 
+const outPut = [];
+
 const questions = [
   {
     type: 'input',
@@ -24,18 +26,35 @@ const questions = [
     name: 'age',
     message: 'Pls, enter the age:',
     validate: answer => {
-      if (Number.isNaN(answer)) {
+      if (isNaN(answer)) {
         return 'Pls, enter a valid age';
       }
       return true;
     },
   },
+  {
+    type: 'confirm',
+    name: 'fillAgain',
+    message: 'Do you want another name or press Enter to cncl:',
+  },
 ];
 
-inquirer
-  .prompt(questions)
+function ask() {
+  inquirer
+    .prompt(questions)
 
-  .then(answers => {
-    // Use user feedback for... whatever!!
-    console.log(answers);
-  });
+    .then(answers => {
+      outPut.push(answers.user);
+
+      if (answers.fillAgain) {
+        ask();
+      } else {
+        // console.log(JSON.stringify(answers, null, ' '));
+        console.log(outPut.join(' ,'));
+      }
+      // Use user feedback for... whatever!!
+      //   console.log(JSON.stringify(answers, null, ' '));
+    });
+}
+
+ask();
