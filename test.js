@@ -1,65 +1,114 @@
 import inquirer from 'inquirer';
 
-const outPut = [];
-
-const questions = [
-  {
-    type: 'input',
-    name: 'user',
-    message: 'Pls, enter the user name or press ENTER to cancel:',
-    validate: answer => {
-      if (answer === '') {
-        return 'Pls, enter a valid name';
-      }
-      return true;
+inquirer
+  .prompt([
+    {
+      type: 'input',
+      message: 'Write your name. To cancel press ENTER: ',
+      name: 'name',
     },
-  },
-  {
-    type: 'list',
-    name: 'gender',
-    message: 'Pls, choose the gender:',
-    choices: ['male', 'female'],
-    default: 'male',
-  },
-  {
-    type: 'input',
-    name: 'age',
-    message: 'Pls, enter the age:',
-    validate: answer => {
-      if (isNaN(answer)) {
-        return 'Pls, enter a valid age';
-      }
-      return true;
+    {
+      type: 'input',
+      message: 'write ur age: ',
+      name: 'age',
+      when(answers) {
+        if (answers.name === '') {
+          return answers.name;
+        }
+        return answers.name;
+      },
     },
-  },
-  //   {
-  //     type: 'confirm',
-  //     name: 'fillAgain',
-  //     message: 'Do you want another name or press Enter to cncl:',
-  //     default: false,
-  //   },
-];
+    {
+      type: 'list',
+      message: 'Choose ur gender: ',
+      name: 'gender',
+      choices: [
+        {
+          name: 'male',
+        },
+        {
+          name: 'female',
+        },
+      ],
+      when(answers) {
+        return answers.name;
+      },
+    },
+    {
+      type: 'confirm',
+      message: 'do you want to search?',
+      name: 'search',
+      when(answers) {
+        return !answers.name;
+      },
+    },
+  ])
+  .then(answers => {});
 
-function ask() {
-  inquirer
-    .prompt(questions)
+// ------------
+//   import inquirer from 'inquirer';
+// import path from 'path';
+// import * as fs from 'fs';
 
-    .then(answers => {
-      outPut.push(answers.user);
-      ask();
+// const usersConfig = fs.existsSync('data.json');
 
-      console.log(outPut.join(' ,'));
+// // console.log(process.cwd());
 
-      //   if (answers.fillAgain) {
+// const questions = [
+//   {
+//     type: 'input',
+//     name: 'user',
+//     message: 'Pls, enter the user name or press ENTER to cancel:',
+//   },
+//   {
+//     type: 'list',
+//     name: 'gender',
+//     message: 'Pls, choose the gender:',
+//     choices: ['male', 'female'],
+//     default: 'male',
+//     when(answers) {
+//       if (answers.name === '') {
+//         return answers.name;
+//       }
+//       return answers.name;
+//     },
+//   },
+//   {
+//     type: 'input',
+//     name: 'age',
+//     message: 'Pls, enter the age:',
+//     // validate: answer => {
+//     //   if (isNaN(answer)) {
+//     //     return 'Pls, enter a valid age';
+//     //   }
+//     //   return true;
+//     // },
 
-      //   } else {
-      //     // console.log(JSON.stringify(answers, null, ' '));
-      //     // console.log(outPut.join(' ,'));
-      //   }
+//     when(answers) {
+//       return answers.name;
+//     },
+//   },
+// ];
 
-      console.log(JSON.stringify(answers, null, ' '));
-    });
-}
+// function ask() {
+//   const data = {};
+//   inquirer
+//     .prompt(questions)
 
-ask();
-console.log(outPut);
+//     .then(answers => {
+//       // outPut.push(answers.user);
+//       ask();
+//       // console.log(outPut.join(' ,'));
+//       // if (answers.fillAgain) {
+//       //   ask();
+//       // } else {
+//       //   // console.log(JSON.stringify(answers, null, ' '));
+//       //   console.log(outPut.join(' ,'));
+//       // }
+//       // Use user feedback for... whatever!!
+//       console.log(JSON.stringify(answers, null, ' '));
+//     });
+// }
+
+// ask();
+// console.log(outPut);
