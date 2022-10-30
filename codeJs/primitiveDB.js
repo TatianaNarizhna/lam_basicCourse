@@ -5,7 +5,7 @@ import * as url from 'url';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const userDataPath = path.join(__dirname, 'data.json');
+const userDataPath = path.join(__dirname, 'data.txt');
 
 const questions = [
   {
@@ -13,7 +13,10 @@ const questions = [
     message: 'Pls, enter the user name or press ENTER to cancel: ',
     name: 'name',
     // when(answers) {
-    //   return !answers.find;
+    //   if (!answers.name) {
+    //     return answers.name;
+    //   }
+    //   return !answers.name;
     // },
   },
   {
@@ -50,6 +53,12 @@ const questions = [
     name: 'find',
     message: 'Pls, enter the name you want to find:',
     when(answers) {
+      if (answers[`search`] === false) {
+        console.log('Bye');
+        process.exit();
+      } else if (answers[`search`] === true) {
+        readUsers().then(users => console.log(users));
+      }
       return !answers.name;
     },
   },
@@ -75,16 +84,20 @@ const addUsers = async ({ name, gender, age }) => {
       gender,
       age,
     };
-    users.push(newUser);
-    await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
+    if (newUser.name !== '') {
+      users.push(newUser);
+      await fs.writeFile(userDataPath, JSON.stringify(users, null, 2));
+    }
   } catch (error) {
     console.error(error);
   }
 };
 
-const findUser = async ({ name }) => {
+const findUser = async name => {
   const users = await readUsers();
-  const [result] = users.filter(user => user.name === name);
+  const [result] = users.filter(
+    user => user.name.toLowerCase() === name.toLowerCase(),
+  );
   return result;
 };
 
@@ -93,18 +106,13 @@ function ask() {
     .prompt(questions)
 
     .then(answers => {
-      console.log(answers);
       addUsers(answers);
 
+      if (answers[`search`] === true && typeof answers['find'] != 'undefined') {
+        findUser(answers.find).then(user => console.log('User found: ', user));
+      }
+
       ask();
-
-      if (answers.search === true) {
-        readUsers().then(users => console.log(users));
-      }
-
-      if (answers.find === answers.name) {
-        findUser(answers.find).then(user => console.log(user));
-      }
     });
 }
 ask();
