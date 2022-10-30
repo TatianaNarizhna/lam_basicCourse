@@ -3,18 +3,18 @@ import path from 'path';
 import fs from 'fs/promises';
 import * as url from 'url';
 
-const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const userDataPath = path.join(__dirname, 'data.json');
-// console.log(userDataPath);
-// console.log(process.cwd());
 
 const questions = [
   {
     type: 'input',
     message: 'Pls, enter the user name or press ENTER to cancel: ',
     name: 'name',
+    // when(answers) {
+    //   return !answers.find;
+    // },
   },
   {
     type: 'list',
@@ -32,11 +32,11 @@ const questions = [
     type: 'input',
     name: 'age',
     message: 'Pls, enter the age: ',
-
     when(answers) {
       return answers.name;
     },
   },
+
   {
     type: 'confirm',
     message: 'Do you want to find user in DB?',
@@ -44,21 +44,11 @@ const questions = [
     when(answers) {
       return !answers.name;
     },
-    // when(answers) {
-    //   if (answers.search === true) {
-    //     readUsers().then(users => console.log(users));
-    //   }
-    // },
   },
   {
     type: 'input',
     name: 'find',
     message: 'Pls, enter the name you want to find:',
-    // when(answers) {
-    //   if (answers.search === true) {
-    //     readUsers().then(users => console.log(users));
-    //   }
-    // },
     when(answers) {
       return !answers.name;
     },
@@ -98,43 +88,23 @@ const findUser = async ({ name }) => {
   return result;
 };
 
-// readUsers().then(users => console.log(users));
-
 function ask() {
   inquirer
     .prompt(questions)
 
     .then(answers => {
+      console.log(answers);
       addUsers(answers);
+
+      ask();
 
       if (answers.search === true) {
         readUsers().then(users => console.log(users));
       }
 
-      ask();
-
       if (answers.find === answers.name) {
         findUser(answers.find).then(user => console.log(user));
       }
-
-      // fs.writeFile('/js/data.json', JSON.stringify(answers));
-
-      // const dataResult = fs.readFile(userDataPath, 'utf8');
-      // console.log(dataResult);
-      // // const data = JSON.parse(dataResult);
-      // ask();
-      // const newUser = {
-      //   name,
-      //   gender,
-      //   age,
-      // };
-      // data.push(newUser);
-      // fs.writeFile(userDataPath, JSON.stringify(data, null, 2));
-      // console.log(data);
-      // return newUser;
-
-      // console.log(JSON.stringify(answers, null, ' '));
     });
 }
-
 ask();
