@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/TatianaNarizhna/lam_basicCourse#readme",
   "dependencies": {
+    "commander": "^9.4.1",
     "eslint": "^8.26.0",
     "inquirer": "^9.1.4"
   }
