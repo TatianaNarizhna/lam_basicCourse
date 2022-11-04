@@ -1,4 +1,11 @@
 import { program } from 'commander';
+import TelegramBot from 'node-telegram-bot-api';
+import 'dotenv/config.js';
+
+const token = process.env.TOKEN;
+const id = process.env.ID;
+
+const bot = new TelegramBot(token, { polling: false });
 
 program.version('0.0.1');
 
@@ -7,8 +14,8 @@ program
   .description('enter some message')
   .alias('m')
   .argument('<message>')
-  .action(mssg => {
-    console.log(mssg);
+  .action(function (msg) {
+    bot.sendMessage(id, msg);
   });
 
 program
@@ -16,8 +23,8 @@ program
   .description('send some picture')
   .alias('p')
   .argument('<path>')
-  .action(pic => {
-    console.log(pic);
+  .action(function (pic) {
+    bot.sendPhoto(id, pic);
   });
 
 program
