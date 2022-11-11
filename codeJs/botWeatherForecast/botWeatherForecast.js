@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import 'dotenv/config.js';
-import getWeather from './weatherApi';
+import getWeather from './weatherApi.js';
 
 // const API_KEY = '4efb9521721d5ec27f0b2becfef0044d';
 // const BASE_URL = 'https://api.openweathermap.org/data/2.5/forecast?';
@@ -9,9 +9,15 @@ const token = process.env.TOKEN;
 
 const bot = new TelegramBot(token, { polling: true });
 
-getWeather();
+bot.onText(/\/start/, msg => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(
+    chatId,
+    `Hi, pls press - /weather - in order to check weather forecast!`,
+  );
+});
 
-bot.onText(/\weather/, (msg, match) => {
+bot.onText(/\/weather/, (msg, match) => {
   const chatId = msg.chat.id;
 
   bot.sendMessage(chatId, 'Weather forecast for a week', {
@@ -32,9 +38,15 @@ bot.onText(/\weather/, (msg, match) => {
   });
 });
 
-// bot.on('message', msg => {
-//   const chatId = msg.chat.id;
-//   let messageText = getWeather(msg.text);
-//   console.log(messageText);
-//   bot.sendMessage(chatId, messageText);
-// });
+bot.on('callback_query', query => {
+  const id = query.message.chat.id;
+
+  const choice = query.data;
+
+  if (choice === 'interval of 3 hours') {
+    getWeather(bot, id, choice);
+  }
+  if (choice === 'interval of 6 hours') {
+    getWeather(bot, id, choice);
+  }
+});
