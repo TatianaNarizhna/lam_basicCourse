@@ -15,7 +15,7 @@ const BASE_URL = 'https://api.openweathermap.org/data/2.5/forecast?';
 // };
 
 function weatherMarkUp(request) {
-  let weather = `${request.dt_txt}:
+  let weather = `\n${request.dt_txt}:
   +${Math.trunc(request.main.temp)}°C, ощущается как: +${Math.trunc(
     request.main.feels_like,
   )}°C, ${request.weather[0].description}.
@@ -33,12 +33,12 @@ export default function getWeather(bot, id, choice) {
       let result = [];
 
       weatherList.map(element => {
-        // let date = new Date(element.dt);
+        let date = new Date(element.dt_txt);
+        let hours = date.getHours();
+        // console.log(hours);
 
         const elementMarkUp = weatherMarkUp(element);
         result.push(elementMarkUp);
-
-        // str += `v ${date} temp ${element.main.temp}`;
       });
       if (choice === 'interval of 3 hours') {
         let str = '';
