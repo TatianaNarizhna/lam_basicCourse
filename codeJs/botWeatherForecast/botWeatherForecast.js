@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import 'dotenv/config.js';
-import getWeather from './weatherApi.js';
+import { weatherByThree, weatherBySix } from './weatherApi.js';
 
 // const API_KEY = '4efb9521721d5ec27f0b2becfef0044d';
 // const BASE_URL = 'https://api.openweathermap.org/data/2.5/forecast?';
@@ -44,9 +44,9 @@ bot.on('callback_query', query => {
   const choice = query.data;
 
   if (choice === 'interval of 3 hours') {
-    getWeather(bot, id, choice);
+    weatherByThree(bot, id);
   }
   if (choice === 'interval of 6 hours') {
-    getWeather(bot, id, choice);
+    weatherBySix(bot, id);
   }
 });
