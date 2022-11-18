@@ -26,5 +26,6 @@
     "eslint": "^8.26.0",
     "inquirer": "^9.1.4",
     "node-telegram-bot-api": "^0.59.0"
-  }
+  },
+  "devDependencies": {}
 }
