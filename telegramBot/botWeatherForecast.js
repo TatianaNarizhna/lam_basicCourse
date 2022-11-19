@@ -13,7 +13,7 @@ bot.onText(/\/start/, msg => {
   const chatId = msg.chat.id;
   bot.sendMessage(
     chatId,
-    `Hi, pls press - /weather - in order to check weather forecast!`,
+    `Hi, pls press - /weather - in order to check weather forecast! or /currency - to check Exchange Rates`,
   );
 });
 
@@ -31,6 +31,27 @@ bot.onText(/\/weather/, (msg, match) => {
           {
             text: 'interval of 6 hours',
             callback_data: 'interval of 6 hours',
+          },
+        ],
+      ],
+    },
+  });
+});
+
+bot.onText(/\/currency/, (msg, match) => {
+  const chatId = msg.chat.id;
+
+  bot.sendMessage(chatId, 'Сurrency', {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: 'USD',
+            callback_data: 'USD',
+          },
+          {
+            text: 'EUR',
+            callback_data: 'EUR',
           },
         ],
       ],
