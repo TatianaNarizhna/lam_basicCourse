@@ -32,6 +32,10 @@ bot.onText(/\/weather/, (msg, match) => {
             text: 'interval of 6 hours',
             callback_data: 'interval of 6 hours',
           },
+          {
+            text: 'back',
+            callback_data: 'back',
+          },
         ],
       ],
     },
@@ -53,6 +57,10 @@ bot.onText(/\/currency/, (msg, match) => {
             text: 'EUR',
             callback_data: 'EUR',
           },
+          {
+            text: 'back',
+            callback_data: 'back',
+          },
         ],
       ],
     },
@@ -69,5 +77,12 @@ bot.on('callback_query', query => {
   }
   if (choice === 'interval of 6 hours') {
     weatherBySix(bot, id);
+  }
+
+  if (choice === 'back') {
+    bot.sendMessage(
+      id,
+      `Hi, pls press - /weather - in order to check weather forecast! or /currency - to check Exchange Rates`,
+    );
   }
 });

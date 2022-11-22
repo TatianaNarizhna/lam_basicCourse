@@ -16,8 +16,7 @@ let formatTime = date => {
 
 function weatherMarkUp(request) {
   let date = new Date(request.dt_txt);
-  const date1 = request.dt_txt.split(' ');
-  console.log(date);
+  // const date1 = request.dt_txt.split(' ');
 
   let formatingDate = date.toLocaleDateString('ru', {
     weekday: 'long',
