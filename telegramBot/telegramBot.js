@@ -1,6 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import 'dotenv/config.js';
 import { weatherByThree, weatherBySix } from './weatherApi.js';
+import { getCurrency } from './valueApi.js';
 
 // const API_KEY = '4efb9521721d5ec27f0b2becfef0044d';
 // const BASE_URL = 'https://api.openweathermap.org/data/2.5/forecast?';
@@ -50,11 +51,11 @@ bot.onText(/\/currency/, (msg, match) => {
       inline_keyboard: [
         [
           {
-            text: 'USD',
+            text: '$ - USD',
             callback_data: 'USD',
           },
           {
-            text: 'EUR',
+            text: '€ - EUR',
             callback_data: 'EUR',
           },
           {
@@ -69,7 +70,6 @@ bot.onText(/\/currency/, (msg, match) => {
 
 bot.on('callback_query', query => {
   const id = query.message.chat.id;
-
   const choice = query.data;
 
   if (choice === 'interval of 3 hours') {
@@ -78,7 +78,9 @@ bot.on('callback_query', query => {
   if (choice === 'interval of 6 hours') {
     weatherBySix(bot, id);
   }
-
+  if (choice === 'USD' || 'EUR') {
+    getCurrency(bot, id, choice);
+  }
   if (choice === 'back') {
     bot.sendMessage(
       id,
