@@ -72,19 +72,20 @@ bot.on('callback_query', query => {
   const id = query.message.chat.id;
   const choice = query.data;
 
-  if (choice === 'interval of 3 hours') {
-    weatherByThree(bot, id);
-  }
-  if (choice === 'interval of 6 hours') {
-    weatherBySix(bot, id);
-  }
-  if (choice === 'USD' || 'EUR') {
-    getCurrency(bot, id, choice);
-  }
   if (choice === 'back') {
     bot.sendMessage(
       id,
       `Hi, pls press - /weather - in order to check weather forecast! or /currency - to check Exchange Rates`,
     );
+  }
+
+  if (choice === 'interval of 3 hours') {
+    weatherByThree(bot, id, choice);
+  }
+  if (choice === 'interval of 6 hours') {
+    weatherBySix(bot, id, choice);
+  }
+  if (choice === 'USD' || 'EUR') {
+    getCurrency(bot, id, choice);
   }
 });
