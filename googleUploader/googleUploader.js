@@ -2,35 +2,32 @@ import { google } from 'googleapis';
 import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
-import { type } from 'os';
 
 const GOOGLE_API_FOLDER_ID = '1LSLda3wBQDCnbFEP0TE8Az4VlDUHI6Pn';
 
-let link = null;
-
-const auth = new google.auth.GoogleAuth({
-  keyFile: './imageUploader.json',
-  scopes: ['https://www.googleapis.com/auth/drive'],
-});
-
-async function uploader() {
+async function uploader(link, fileName, extension) {
   try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: './imageUploader.json',
+      scopes: ['https://www.googleapis.com/auth/drive'],
+    });
+
     const driveService = google.drive({
       version: 'v3',
       auth,
     });
 
-    let fileMetaData = {
-      name: 'pict.jpg',
+    const fileMetaData = {
+      name: `${fileName}${extension}`,
       parents: [GOOGLE_API_FOLDER_ID],
     };
 
-    let media = {
-      mimeType: 'image/jpg',
-      body: fs.createReadStream(`./flowers.jpg`),
+    const media = {
+      mimeType: `image/${extension}`,
+      body: fs.createReadStream(link),
     };
 
-    let response = await driveService.files.create({
+    const response = await driveService.files.create({
       resource: fileMetaData,
       media,
       field: 'id',
@@ -56,7 +53,7 @@ function cliApp() {
       },
       {
         type: 'confirm',
-        message: 'Would you like to change it?',
+        message: 'Would you like to change the name of the file?',
         name: 'changeLink',
         when(answers) {
           const pathName = answers.imgLink.split('/').pop();
@@ -84,24 +81,32 @@ function cliApp() {
       {
         type: 'confirm',
         message: 'Would you like to shorten link?',
-        name: 'changeLink',
+        name: 'shortenLink',
         when(answers) {
-          return answers.imgLink;
+          if (answers[`newName`]) {
+            console.log({ newName: answers.newName });
+          }
+          return answers.changeLink;
         },
       },
     ])
     .then(answers => {
-      // if (typeof answers['imgLink'] === 'enter') {
-      //   console.log('Path to file: ', answers.imgLink);
-      // }
-      // console.log(answers.imgLink);
+      let parseLink = path.parse(answers.imgLink);
+      let imgLink = answers.imgLink;
+      let newFileName = answers.newName;
+
+      if (answers.changeLink) {
+        uploader(imgLink, newFileName, parseLink.ext).then(data =>
+          console.log(data),
+        );
+      } else {
+        uploader(imgLink, newFileName, parseLink.ext).then(data =>
+          console.log(data),
+        );
+      }
     })
     .catch(error => {
-      if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        // Something else went wrong
-      }
+      console.log(error);
     });
 }
 
