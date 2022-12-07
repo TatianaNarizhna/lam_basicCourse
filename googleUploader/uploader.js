@@ -1,14 +1,16 @@
 import { google } from 'googleapis';
 import inquirer from 'inquirer';
+import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
-const GOOGLE_API_FOLDER_ID = '1LSLda3wBQDCnbFEP0TE8Az4VlDUHI6Pn';
+const GOOGLE_API_FOLDER_ID = '1eoKmpDpBzA_-CZXfmkzu46RUtJAHg0Fq';
+const TOKEN = 'Ka9DAXWcpargzIwYjOcjRNMxuExftNwDzGkLMwbnSoCIEn3FQfp0leXSsOJb';
 
 async function uploader(link, fileName, extension) {
   try {
     const auth = new google.auth.GoogleAuth({
-      keyFile: './imageUploader.json',
+      keyFile: './googleUploader/imageapi.json',
       scopes: ['https://www.googleapis.com/auth/drive'],
     });
 
@@ -34,6 +36,7 @@ async function uploader(link, fileName, extension) {
     });
 
     return response.data.id;
+    // return 'Successfully loaded';
   } catch (error) {
     console.log('Upload file error', error);
   }
@@ -42,6 +45,24 @@ async function uploader(link, fileName, extension) {
 // uploader().then(data => {
 //   console.log(data);
 // });
+
+function tinyURL(id) {
+  try {
+    axios({
+      method: 'post',
+      url: 'https://api.tinyurl.com/create',
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      data: {
+        url: `https://drive.google.com/uc?export=view&id=${id}`,
+        domain: 'tiny.one',
+      },
+    }).then(res => console.log(res.data.data.tiny_url));
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 function cliApp() {
   inquirer
@@ -80,7 +101,7 @@ function cliApp() {
       },
       {
         type: 'confirm',
-        message: 'Would you like to shorten link?',
+        message: 'Would you like shorten link?',
         name: 'shortenLink',
         when(answers) {
           if (answers[`newName`]) {
@@ -97,7 +118,7 @@ function cliApp() {
 
       if (answers.changeLink) {
         uploader(imgLink, newFileName, parseLink.ext).then(data =>
-          console.log(data),
+          tinyURL(data),
         );
       } else {
         uploader(imgLink, newFileName, parseLink.ext).then(data =>
@@ -111,3 +132,12 @@ function cliApp() {
 }
 
 cliApp();
+
+// axios({
+//   method: 'post',
+//   url: '/user/12345',
+//   data: {
+//     firstName: 'Fred',
+//     lastName: 'Flintstone',
+//   },
+// });

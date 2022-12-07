@@ -1,93 +1,46 @@
+import { google } from 'googleapis';
 import inquirer from 'inquirer';
-import fs from 'fs/promises';
-const { rawListeners } = require('process');
-const fileRead = fs.readFileSync('file.txt', 'utf8');
+import fs from 'fs';
+import path from 'path';
 
-function askForINfo() {
-  inquirer
-    .prompt([
-      {
-        type: 'input',
-        message: 'Write your name. To cancel press ENTER: ',
-        name: 'name',
-      },
-      {
-        type: 'input',
-        message: 'write ur age: ',
-        name: 'age',
-        when(answers) {
-          if (answers.name === '') {
-            return answers.name;
-          }
-          return answers.name;
-        },
-      },
-      {
-        type: 'list',
-        message: 'Choose ur gender: ',
-        name: 'gender',
-        choices: [
-          {
-            name: 'male',
-          },
-          {
-            name: 'female',
-          },
-        ],
-        when(answers) {
-          return answers.name;
-        },
-      },
-      {
-        type: 'confirm',
-        message: 'do you want to search?',
-        name: 'search',
-        when(answers) {
-          return !answers.name;
-        },
-      },
-      {
-        type: 'input',
-        message: 'Enter user`s name for searching in DB: ',
-        name: 'nameDB',
-        when(answers) {
-          if (answers[`search`] === false) {
-            console.log('Thx for using!');
-            process.exit();
-          } else if (answers[`search`] === true && answers.name == '') {
-            const newRead = fs.readFileSync('file.txt', 'utf8');
-            console.log(newRead);
-          }
-          return !answers.name;
-        },
-      },
-    ])
-    .then(answers => {
-      let data = JSON.parse(fileRead);
-      if (typeof answers['search'] == 'undefined') {
-        data.push(answers);
-      }
-      if (
-        answers[`search`] === true &&
-        typeof answers['nameDB'] != 'undefined'
-      ) {
-        let res = data.filter(
-          answer =>
-            answer.name.toLowerCase() == answers['nameDB'].toLowerCase(),
-        );
-        if (res.length > 1) {
-          console.log(res);
-          process.exit();
-        } else {
-          console.log(`User wasn't found `);
-          process.exit();
-        }
-      }
-      fs.writeFileSync('file.txt', JSON.stringify(data, null, '  '), 'UTF-8', {
-        flags: 'a+',
-      });
+const GOOGLE_API_FOLDER_ID = '1eoKmpDpBzA_-CZXfmkzu46RUtJAHg0Fq';
 
-      askForINfo();
+async function uploader() {
+  try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: '../googleUploader/imageapi-370811-4cd16a3806ea.json',
+      scopes: ['https://www.googleapis.com/auth/drive'],
     });
+
+    const driveService = google.drive({
+      version: 'v3',
+      auth,
+    });
+
+    const fileMetaData = {
+      name: 'flowers.jpg',
+      parents: [GOOGLE_API_FOLDER_ID],
+    };
+
+    const media = {
+      mimeType: 'image/jpg',
+      body: fs.createReadStream(
+        '../../lam_basicCourse/googleUploader/flowers.jpg',
+      ),
+    };
+
+    const response = await driveService.files.create({
+      resource: fileMetaData,
+      media,
+      field: 'id',
+    });
+
+    return response.data.id;
+  } catch (error) {
+    console.log(error);
+  }
 }
-askForINfo();
+
+uploader().then(data => {
+  console.log(data);
+});
