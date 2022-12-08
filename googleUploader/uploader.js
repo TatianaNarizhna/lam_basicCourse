@@ -36,7 +36,6 @@ async function uploader(link, fileName, extension) {
     });
 
     return response.data.id;
-    // return 'Successfully loaded';
   } catch (error) {
     console.log('Upload file error', error);
   }
@@ -96,6 +95,7 @@ function cliApp() {
           if (answers.changeLink) {
             return answers.changeLink;
           }
+
           return answers.changeLink;
         },
       },
@@ -107,6 +107,9 @@ function cliApp() {
           if (answers[`newName`]) {
             console.log({ newName: answers.newName });
           }
+          if (!answers.changeLink) {
+            return answers.imgLink;
+          }
           return answers.changeLink;
         },
       },
@@ -116,13 +119,14 @@ function cliApp() {
       let imgLink = answers.imgLink;
       let newFileName = answers.newName;
 
-      if (answers.changeLink) {
-        uploader(imgLink, newFileName, parseLink.ext).then(data =>
-          tinyURL(data),
-        );
+      if (answers.shortenLink) {
+        uploader(imgLink, newFileName, parseLink.ext).then(data => {
+          console.log('File successfully loaded!');
+          tinyURL(data);
+        });
       } else {
         uploader(imgLink, newFileName, parseLink.ext).then(data =>
-          console.log(data),
+          console.log('File successfully loaded!'),
         );
       }
     })
@@ -132,12 +136,3 @@ function cliApp() {
 }
 
 cliApp();
-
-// axios({
-//   method: 'post',
-//   url: '/user/12345',
-//   data: {
-//     firstName: 'Fred',
-//     lastName: 'Flintstone',
-//   },
-// });

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "mom",
+    "gender": "male",
+    "age": "44"
+  },
+  {
+    "name": "pap",
+    "gender": "female",
+    "age": "88"
+  },
+  {
+    "name": "exit",
+    "gender": "male",
+    "age": ""
+  }
+]

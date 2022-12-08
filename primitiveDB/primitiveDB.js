@@ -54,7 +54,7 @@ const questions = [
     message: 'Pls, enter the name you want to find:',
     when(answers) {
       if (answers[`search`] === false) {
-        console.log('Bye');
+        console.log('Bye!');
         process.exit();
       } else if (answers[`search`] === true) {
         readUsers().then(users => console.log(users));
