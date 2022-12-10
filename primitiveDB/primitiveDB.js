@@ -88,9 +88,8 @@ const addUsers = async ({ name, gender, age }) => {
 
 const findUser = async name => {
   const users = await readUsers();
-  const [result] = users.filter(
-    user => user.name.toLowerCase() === name.toLowerCase(),
-  );
+
+  const result = users.filter(user => user.name.includes(name));
   return result;
 };
 
@@ -102,7 +101,12 @@ function ask() {
       addUsers(answers);
 
       if (answers[`search`] === true && typeof answers['find'] != 'undefined') {
-        findUser(answers.find).then(user => console.log('User found: ', user));
+        findUser(answers.find).then(user => {
+          if (user.length === 0) {
+            return console.log('User not found');
+          }
+          console.log('User found', user);
+        });
       }
 
       ask();
