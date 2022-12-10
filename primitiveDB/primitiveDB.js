@@ -12,12 +12,6 @@ const questions = [
     type: 'input',
     message: 'Pls, enter the user name or press ENTER to cancel: ',
     name: 'name',
-    // when(answers) {
-    //   if (!answers.name) {
-    //     return answers.name;
-    //   }
-    //   return !answers.name;
-    // },
   },
   {
     type: 'list',
@@ -70,7 +64,6 @@ const readUsers = async () => {
     const users = JSON.parse(result);
     return users;
   } catch (error) {
-    // console.error(error);
     users = '[]';
     console.log('no data');
   }

@@ -41,6 +41,7 @@ export const weatherByThree = async (bot, id) => {
       )
       .then(response => {
         const weatherList = response.data.list;
+        console.log(response.data);
         let result = [];
 
         weatherList.map(element => {
