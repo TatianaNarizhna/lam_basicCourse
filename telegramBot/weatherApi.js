@@ -14,57 +14,32 @@ let formatTime = date => {
   return `${hour}:${minutes}`;
 };
 
-function weatherMarkUp(request, res) {
+function weatherMarkUp(request) {
   let date = new Date(request.dt_txt);
-  const date1 = request.dt_txt.split(' ')[0];
-  // console.log(date1);
+  //   const date1 = request.dt_txt.split(" ");
+  // console.log(date.getDate());
 
-  let getDateFromRes = new Date(res[0].dt_txt);
-  console.log(getDateFromRes);
+  [request].reduce((acc, { main, dt_txt, weather }) => {
+    const date = dt_txt.split(' ');
+    const hours = date[1].split('--');
+    console.log(hours);
 
-  let formatingDate = date.toLocaleDateString('ru', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  });
+    // const dateNum = new Date(el.dt_txt).getDate();
+  }, {});
 
-  // console.log(typeof formatingDate);
+  //   let formatingDate = date.toLocaleDateString('ru', {
+  //     weekday: 'long',
+  //     month: 'long',
+  //     day: 'numeric',
+  //   });
 
-  let str = '';
-
-  let time = formatTime(date);
-  if (date1 !== date1) {
-    str += `\n${formatingDate}:`;
-
-    str += `
-      ${time}: +${Math.trunc(
-      request.main.temp,
-    )}°C, ощущается как: +${Math.trunc(request.main.feels_like)}°C,${
-      request.weather[0].description
-    }.
-  `;
-  } else {
-    str += `
-      ${time}: +${Math.trunc(
-      request.main.temp,
-    )}°C, ощущается как: +${Math.trunc(request.main.feels_like)}°C,${
-      request.weather[0].description
-    }.
-  `;
-  }
-
-  // let weather = `\n${formatingDate}:
-  //    ${time}: +${Math.trunc(request.main.temp)}°C, ощущается как: +${Math.trunc(
-  //   request.main.feels_like,
-  // )}°C,${request.weather[0].description}.
-  // `;
-
-  //   let weather = `\n${formatingDate}:  ?
+  //   let time = formatTime(date);
+  //   let weather = `\n${formatingDate}:
   //    ${time}: +${Math.trunc(request.main.temp)}°C, ощущается как: +${Math.trunc(
   //     request.main.feels_like,
   //   )}°C,${request.weather[0].description}.
   // `;
-  return str;
+  //   return weather;
 }
 
 export const weatherByThree = async (bot, id) => {
@@ -79,7 +54,7 @@ export const weatherByThree = async (bot, id) => {
         let result = [];
 
         weatherList.map(element => {
-          const elementMarkUp = weatherMarkUp(element, weatherList);
+          const elementMarkUp = weatherMarkUp(element);
 
           result.push(elementMarkUp);
         });
