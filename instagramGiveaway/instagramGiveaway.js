@@ -1,35 +1,69 @@
 import fs from 'fs/promises';
 import path from 'path';
+import * as url from 'url';
 
-const fileToRead = './instagramGiveaway/data';
+const __dirname = url.fileURLToPath(new URL('./data', import.meta.url));
+
+const repoToRead = './instagramGiveaway/data';
 
 const argv = process.argv;
 
-// const fn = async () => {
-//   const result = await fs.readdir(fileToRead, (err, files) => {
-//     console.log(result);
-//   });
-//   return result;
+const onRepoToRead = async rep => {
+  try {
+    const result = await fs.readdir(rep);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const onFileToRead = async () => {
+  try {
+    const fileText = await onRepoToRead(repoToRead);
+
+    const txt = fileText.forEach(file => {
+      const dataPath = path.join(__dirname, file);
+      return dataPath;
+    });
+    await fs.readFile(txt, 'utf-8');
+    console.log(txt);
+    return txt;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onFileToRead();
+
+// const onMakeArray = async () => {
+//   try {
+//     const files = await onFileToRead();
+//     console.log(files);
+//     const array = files.toString().split('\n');
+//   } catch (error) {
+//     console.error(error);
+//   }
 // };
 
-// fn();
+// onMakeArray();
 
-function readFiles(dirname, onFileContent, onError) {
-  fs.readdir(dirname, function (err, filenames) {
-    if (err) {
-      onError(err);
-      return;
-    }
-    filenames.forEach(function (filename) {
-      fs.readFile(dirname + filename, 'utf-8', function (err, content) {
-        if (err) {
-          onError(err);
-          return;
-        }
-        onFileContent(filename, content);
-      });
-    });
-  });
-}
+// resultingArray();
 
-readFiles(fileToRead);
+// fs.readdir(repoToRead, (err, files) => {
+//   if (err) {
+//     onError(err);
+//     return;
+//   }
+//   files.forEach(file => {
+//     const dataPath = path.join(__dirname, file);
+
+//     fs.readFile(dataPath, 'utf-8', (err, content) => {
+//       if (err) {
+//         console.log(err);
+//         return;
+//       }
+//       const array = content.toString().split('\n');
+//       console.log(array);
+//     });
+//   });
+// });
