@@ -34,101 +34,59 @@ function existInAllFiles(filesArr) {
   let existValues = intersection(fullValuesArray )
 
   return `Exist in all files: ${existValues.length}`
+}
 
+function existInAtLeastTen(filesArr) {
+  let ten = new Array()
+  
+  filesArr.forEach(file => {
+    const filePath = path.join(__dirname, file);
+    const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
+ 
+   array.forEach(arr => {
+      ten.push(arr)
+    })
+  })
 
+  const object = ten.reduce((acc, el) => {
+    if(!acc.hasOwnProperty(el)) {
+      acc[el] = 0
+    }
+    acc[el] +=1
+    
+    return acc;
+  }, {})
+
+    let atLeastTen = new Array()
+     for (const key in object) {
+       if(object[key] >= 10) { 
+        atLeastTen.push(key)
+       }
+    }
+    return `Exist in at least ten files ${atLeastTen.length}`
 }
 
 console.log(uniqueValues (files))
 console.log(existInAllFiles(files));
+console.log(existInAtLeastTen(files))
 
-// console.time('1');
+
+console.time('1');
 // const start= new Date().getTime();
-// existInAllFiles(files)
+existInAtLeastTen(files)
 // const end = new Date().getTime();
 // console.log(`SecondWay: ${end - start}ms`);
-// console.timeEnd('1')
+console.timeEnd('1')
 
 
 // Execution time
 // uniqueValues: 61-62ms
 // existInAllFiles: 42-44ms
+// existInAtLeastTen: 4ms
 
 // Results
 // uniqueValues:
 // existInAllFiles: 
+// existInAtLeastTen: 
 
 
-
-// function uniqueValues() {
-//   const data = onGetData(repoToRead)
-//   console.log(data);
-
-//   // const uniqueNames = data.filter((el, index, arr) => arr.indexOf(el) === index)
-//   // console.log(uniqueNames)
-//   // return uniqueNames;
-
-// }
-
-// uniqueValues()
-
-
-
-// const onRepoToRead = async rep => {
-//   try {
-//     const result = await fs.readdir(rep);
-//     return result;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// const onFileToRead = async () => {
-//   try {
-//     const fileText = await onRepoToRead(repoToRead);
-
-//     const txt = fileText.forEach(file => {
-//       const dataPath = path.join(__dirname, file);
-//       return dataPath;
-//     });
-//     await fs.readFile(txt, 'utf-8');
-//     console.log(txt);
-//     return txt;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// onFileToRead();
-
-// const onMakeArray = async () => {
-//   try {
-//     const files = await onFileToRead();
-//     console.log(files);
-//     const array = files.toString().split('\n');
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// onMakeArray();
-
-// resultingArray();
-
-
-
-  //  fls.forEach(file => {
-  //     const dataPath = path.join(__dirname, file);
-
-  //     fs.readFileSync(dataPath, 'utf-8', (err, content) => {
-  //       if (err) {
-  //         console.error(err);
-  //         return;
-  //       }
-  //    console.log(content);
-  //       const array = content.toString().split('\n');
-  //       // let pop = array.pop()
-  //       // let res = new Set(array).size
-   
-  //       console.log(array);
-  //     });
-  //   });
