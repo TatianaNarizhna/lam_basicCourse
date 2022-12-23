@@ -1,10 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as url from 'url';
-import intersection from 'lodash.intersection';
-
-const repoToRead = './instagramGiveaway/data';
-const argv = process.argv;
+import _ from 'lodash';
 
 const __dirname = url.fileURLToPath(new URL('./data', import.meta.url));
 
@@ -26,22 +23,23 @@ function uniqueValues (filesArr) {
 
 function existInAllFiles(filesArr) {
   let fullValuesArray = new Array()
-  filesArr.forEach(file => {
-    const filePath = path.join(__dirname, file);
-    const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
-    fullValuesArray.push(array)
-  })
-  let existValues = intersection(fullValuesArray )
+   filesArr.forEach(file => {
+     const filePath = path.join(__dirname, file);
+     const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
+     fullValuesArray.push(array)
 
-  return `Exist in all files: ${existValues.length}`
+    })
+     let existValues = _.intersection.apply(_, fullValuesArray )
+
+      return `Exist in all files: ${existValues.length}`
 }
 
 function existInAtLeastTen(filesArr) {
   let ten = new Array()
   
-  filesArr.forEach(file => {
-    const filePath = path.join(__dirname, file);
-    const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
+   filesArr.forEach(file => {
+     const filePath = path.join(__dirname, file);
+     const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
  
    array.forEach(arr => {
       ten.push(arr)
@@ -59,6 +57,7 @@ function existInAtLeastTen(filesArr) {
 
     let atLeastTen = new Array()
      for (const key in object) {
+   
        if(object[key] >= 10) { 
         atLeastTen.push(key)
        }
@@ -71,22 +70,22 @@ console.log(existInAllFiles(files));
 console.log(existInAtLeastTen(files))
 
 
-console.time('1');
-// const start= new Date().getTime();
-existInAtLeastTen(files)
-// const end = new Date().getTime();
-// console.log(`SecondWay: ${end - start}ms`);
-console.timeEnd('1')
-
-
 // Execution time
-// uniqueValues: 61-62ms
-// existInAllFiles: 42-44ms
-// existInAtLeastTen: 4ms
+// uniqueValues: 904ms - 912ms
+// existInAllFiles: 931ms - 950ms
+// existInAtLeastTen: 1.1s - 1.2s
 
 // Results
-// uniqueValues:
-// existInAllFiles: 
-// existInAtLeastTen: 
+// uniqueValues: 129240
+// existInAllFiles: 441
+// existInAtLeastTen: 108345
+
+// ------------------------------------------------
+// console.time('1');
+// const start= new Date().getTime();
+// existInAllFiles(files)
+// const end = new Date().getTime();
+// console.log(`SecondWay: ${end - start}ms`);
+// console.timeEnd('1')
 
 
