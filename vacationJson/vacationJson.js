@@ -10,11 +10,19 @@ let parsedData = JSON.parse(jsonData)
 // console.log(parsedData);
 
 function editJsonFile () {
-    parsedData.map(el => {
+    parsedData.map((el, indx, arr) => {
         let container = {}
         container[`userId`] = el.user._id;
+        container.name = el.user.name;
+        container[`weekendDates`] = [[`${el.startDate} - ${el.endDate}`]]
+
+        if(arr.indexOf(el._id) !== indx._id) {
+            container[`weekendDates`].push([`${el.startDate} - ${el.endDate}`]) 
+          
+        }
 
         console.log(container)
+        return container
     }
     )
 }
