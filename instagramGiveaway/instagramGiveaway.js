@@ -5,70 +5,66 @@ import _ from 'lodash';
 
 const __dirname = url.fileURLToPath(new URL('./data', import.meta.url));
 
-const files = fs.readdirSync(__dirname)
+const files = fs.readdirSync(__dirname);
 
-function uniqueValues (filesArr) {
-   let uniqueValue = new Set()
-   filesArr.forEach(file => {
-      const filePath = path.join(__dirname, file);
-      const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
-  
-     for (const key in array) { 
-      uniqueValue.add(array[key]) ; 
-   }
-   });
-   return `Unique phrases: ${uniqueValue.size}`
+function uniqueValues(filesArr) {
+  let uniqueValue = new Set();
+  filesArr.forEach(file => {
+    const filePath = path.join(__dirname, file);
+    const array = fs.readFileSync(filePath, 'utf-8').toString().split('\n');
+
+    for (const key in array) {
+      uniqueValue.add(array[key]);
+    }
+  });
+  return `Unique phrases: ${uniqueValue.size}`;
 }
 
-
 function existInAllFiles(filesArr) {
-  let fullValuesArray = new Array()
-   filesArr.forEach(file => {
-     const filePath = path.join(__dirname, file);
-     const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
-     fullValuesArray.push(array)
+  let fullValuesArray = new Array();
+  filesArr.forEach(file => {
+    const filePath = path.join(__dirname, file);
+    const array = fs.readFileSync(filePath, 'utf-8').toString().split('\n');
+    fullValuesArray.push(array);
+  });
+  let existValues = _.intersection.apply(_, fullValuesArray);
 
-    })
-     let existValues = _.intersection.apply(_, fullValuesArray )
-
-      return `Exist in all files: ${existValues.length}`
+  return `Exist in all files: ${existValues.length}`;
 }
 
 function existInAtLeastTen(filesArr) {
-  let ten = new Array()
-  
-   filesArr.forEach(file => {
-     const filePath = path.join(__dirname, file);
-     const array = fs.readFileSync(filePath, 'utf-8').toString().split("\n")
- 
-   array.forEach(arr => {
-      ten.push(arr)
-    })
-  })
+  let ten = new Array();
+
+  filesArr.forEach(file => {
+    const filePath = path.join(__dirname, file);
+    const array = fs.readFileSync(filePath, 'utf-8').toString().split('\n');
+
+    array.forEach(arr => {
+      ten.push(arr);
+    });
+  });
 
   const object = ten.reduce((acc, el) => {
-    if(!acc.hasOwnProperty(el)) {
-      acc[el] = 0
+    if (!acc.hasOwnProperty(el)) {
+      acc[el] = 0;
     }
-    acc[el] +=1
-    
-    return acc;
-  }, {})
+    acc[el] += 1;
 
-    let atLeastTen = new Array()
-     for (const key in object) {
-   
-       if(object[key] >= 10) { 
-        atLeastTen.push(key)
-       }
+    return acc;
+  }, {});
+
+  let atLeastTen = new Array();
+  for (const key in object) {
+    if (object[key] >= 10) {
+      atLeastTen.push(key);
     }
-    return `Exist in at least ten files ${atLeastTen.length}`
+  }
+  return `Exist in at least ten files ${atLeastTen.length}`;
 }
 
-console.log(uniqueValues (files))
+console.log(uniqueValues(files));
 console.log(existInAllFiles(files));
-console.log(existInAtLeastTen(files))
-
+console.log(existInAtLeastTen(files));
 
 // Execution time
 // uniqueValues: 904ms - 912ms
@@ -87,5 +83,3 @@ console.log(existInAtLeastTen(files))
 // const end = new Date().getTime();
 // console.log(`SecondWay: ${end - start}ms`);
 // console.timeEnd('1')
-
-
