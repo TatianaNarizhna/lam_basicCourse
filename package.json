@@ -5,8 +5,8 @@
   "main": "",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "polymer serve"
+    "start": "node geolocationIP/geolocationIP.js",
+    "start:dev": "nodemon geolocationIP/geolocationIP.js"
   },
   "repository": {
     "type": "git",
@@ -30,12 +30,12 @@
     "inquirer": "^9.1.4",
     "lodash": "^4.17.21",
     "lodash.intersection": "^4.4.0",
-    "node-telegram-bot-api": "^0.59.0",
-    "nodemon": "^2.0.20"
+    "node-telegram-bot-api": "^0.59.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.14",
-    "@types/lodash.intersection": "^4.4.7"
+    "@types/lodash.intersection": "^4.4.7",
+    "nodemon": "^2.0.20"
   }
 }
