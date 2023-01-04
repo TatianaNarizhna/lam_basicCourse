@@ -9,18 +9,37 @@ app.use(bodyParser.json());
 
 const __dirname = url.fileURLToPath(new URL('./IPDB.CSV', import.meta.url));
 let jsonData = fs.readFileSync(__dirname, 'utf8').split('\r\n');
-console.log(jsonData);
+// console.log(jsonData);
 
-// app.use((req, res) => {
-//   const request = req.body;
-//   const reqIp = request.ip.split('.').reduce((r, e) => r * 256 + +e);
-//   console.log(reqIp);
-// });
+function oneEl(data) {
+  let ipArr = [];
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+
+    const strEl = element.replace(/["]/g, '').split(',');
+    const ip = strEl.slice(0, 2);
+    ipArr.push(Number(...ip));
+  }
+  return ipArr;
+}
+
+oneEl(jsonData);
 
 app.get('/', (req, res) => {
-  const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
-  res.send(ipAddress);
+  res.send('<h1>Geolocation says Hello</h1>');
 });
+
+app.get('/get_ip', (req, res) => {
+  const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
+  res.send(`<h2>Your IP ${ipAddress}</h2>`);
+});
+
+app.get('/get_location', (req, res) => {});
+
+// app.get('/', (req, res) => {
+//   const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
+//   res.send(ipAddress);
+// });
 
 // app.get('/', (req, res) => {
 //   res.send('<h1></h2>');
