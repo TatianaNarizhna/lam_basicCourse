@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+app.set('trust proxy', true);
 
 const __dirname = url.fileURLToPath(new URL('./IPDB.CSV', import.meta.url));
 let jsonData = fs.readFileSync(__dirname, 'utf8').split('\r\n');
@@ -23,7 +24,7 @@ function oneEl(data) {
   return ipArr;
 }
 
-oneEl(jsonData);
+// oneEl(jsonData);
 
 app.get('/', (req, res) => {
   res.send('<h1>Geolocation says Hello</h1>');
@@ -34,7 +35,10 @@ app.get('/get_ip', (req, res) => {
   res.send(`<h2>Your IP ${ipAddress}</h2>`);
 });
 
-app.get('/get_location', (req, res) => {});
+app.get('/get_location', (req, res) => {
+  const el = oneEl(jsonData);
+  console.log(el);
+});
 
 // app.get('/', (req, res) => {
 //   const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
