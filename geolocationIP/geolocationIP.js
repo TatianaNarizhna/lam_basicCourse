@@ -1,26 +1,21 @@
 import fs from 'fs';
 import * as url from 'url';
 import express from 'express';
+import ip from 'ip';
 import bodyParser from 'body-parser';
+
 const app = express();
 const port = 3000;
 
 // app.use(bodyParser.json());
-// app.set('trust proxy', true);
+app.set('trust proxy', true);
 
 const __dirname = url.fileURLToPath(new URL('./IPDB.CSV', import.meta.url));
 let jsonData = fs.readFileSync(__dirname, 'utf8').split('\r\n');
 
 function oneEl(data, ip) {
   const arrEl = [];
-  const yyy = ip.split('.');
-
-  let ip2 =
-    yyy[0] * 256 ** 3 +
-    yyy[1] * 256 ** 2 +
-    yyy[2] * 256 ** 1 +
-    yyy[3] * 256 ** 0;
-  console.log(+ip);
+  // console.log(ip);
 
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
@@ -56,30 +51,34 @@ app.get('/', (req, res) => {
   res.send('<h1>Geolocation says Hello</h1>');
 });
 
-app.get('/get_ip', (req, res) => {
-  const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
+// app.get('/get_ip', (req, res) => {
+//   let ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+//   res.send(`<h2>Your IP ${ipAddress}</h2>`);
+// })
 
+app.get('/get_ip', (req, res) => {
+  // const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  // const ipAddress =
+  // req.header('x-forwarded-for') || req.socket.remoteAddress || req.ip;
+
+  const ipAddress = ip.address();
   res.send(`<h2>Your IP ${ipAddress}</h2>`);
 });
 
 app.get('/get_location', (req, res) => {
   res.send('<h1></h1>');
-  let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-
+  // let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const ipAddress = ip.address();
+  console.log(parseInt(ipAddress, 10));
   req.remoteAddress;
   req.socket.remoteAddress || req.socket.remoteAddress;
 
-  oneEl(jsonData, ip);
+  oneEl(jsonData, ipAddress);
 });
 
 app.listen(port, () => {
   console.log(`example app listening on port ${port}`);
 });
-
-// app.get('/', (req, res) => {
-//   const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
-//   res.send(ipAddress);
-// });
 
 // app.get('/', (req, res) => {
 //   res.send('<h1></h2>');
