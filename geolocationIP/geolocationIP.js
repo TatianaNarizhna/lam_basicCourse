@@ -3,7 +3,6 @@ import * as url from 'url';
 import express from 'express';
 import ip from 'ip';
 import { publicIpv4 } from 'public-ip';
-import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
@@ -22,7 +21,9 @@ app.get('/get_ip', (req, res) => {
 });
 
 app.get('/get_location', (req, res) => {
-  // res.send('<h1></h1>');
+  const ipAddress =
+    req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+
   function formatToIp(strNumIP) {
     return (
       (strNumIP >>> 24) +
@@ -35,26 +36,24 @@ app.get('/get_location', (req, res) => {
     );
   }
 
-  const ipAddress =
-    req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
-
   const dataIpArr = renderLocation(jsonData, ipAddress);
 
   for (const el of dataIpArr) {
     let ip1 = Number(el.slice(0, 1));
     let ip2 = Number(el.slice(1, 2));
-    let location = el.slice(3, 4);
+
     // 1.1.255.255
     // 16908287
-    const ipToNum = ipAddress.split('.').reduce((a, b) => (a << 8) | b) >>> 0;
+    const ipToNum =
+      '223.252.0.0'.split('.').reduce((a, b) => (a << 8) | b) >>> 0;
 
     if (ipToNum >= ip1 && ipToNum <= ip2) {
-      res.send(
-        ` <h2>Your IP address: ${ipAddress}<br/>
-        Your location: ${location}<br/>
-        IP start: ${formatToIp(el[0])}<br/>
-        IP end: ${formatToIp(el[1])}<h2/>`,
-      );
+      return res.json({
+        'Your IP address': ipAddress,
+        Location: el[3],
+        'IP start': formatToIp(el[0]),
+        'IP end': formatToIp(el[1]),
+      });
     }
   }
 });
