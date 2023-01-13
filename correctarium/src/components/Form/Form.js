@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
     )
 }
 
-FormElement.propTypes = {
+FormElement.propTypes = { 
     
 }
 
