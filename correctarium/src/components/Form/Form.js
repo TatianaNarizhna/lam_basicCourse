@@ -32,9 +32,9 @@ function FormElementData({ onSubmit }) {
         setComents(value);
         break;
 
-      case 'language':
-        setLanguage(value);
-        break;
+      // case 'language':
+      //   setLanguage(value);
+      //   break;
 
       default:
         break;
@@ -43,9 +43,9 @@ function FormElementData({ onSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    const language = e.currentTarget.value;
     onSubmit({ service, textField, email, name, coments, language });
-    // setLanguage(e.currentTarget.value);
+    setLanguage(e.currentTarget.value);
   };
 
   return (
@@ -107,24 +107,33 @@ function FormElementData({ onSubmit }) {
             />
           </label>
 
-          <label htmlFor="language">Мовна пара</label>
+          <label htmlFor="language">Мова</label>
           <input
-            // type="submit"
-            // eslint-disable-next-line no-sequences
-            // onChange={handleChange}
             list="languages"
             id="language"
             name="language"
             value={language}
-            onChange={handleChange}
-            onInput={handleSubmit}
+            // onInput={e => {
+            //   setLanguage(e.currentTarget.value);
+            // }}
+            onChange={handleSubmit}
           />
-          <datalist id="languages">
-            <option value="Українська" />
-            <option value="Російська" />
-            <option value="Англійська" />
-            <option value="Англійська(носій)" />
-          </datalist>
+          {service === 'Редагування' ? (
+            <datalist id="languages">
+              <option value="Українська" />
+              <option value="Російська" />
+              <option value="Англійська" />
+              <option value="Англійська(носій)" />
+            </datalist>
+          ) : (
+            <datalist id="languages">
+              <option value="Українська/російська - англ" />
+              <option value="Англійська - українська" />
+              <option value="Англійська - російська" />
+              <option value="Російська - українська" />
+              <option value="Українська - російська" />
+            </datalist>
+          )}
         </div>
       </form>
     </div>
