@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import s from './Form.module.css';
 
 function FormElementData({ onSubmit }) {
   const [service, setService] = useState('');
@@ -65,75 +66,100 @@ function FormElementData({ onSubmit }) {
         </datalist>
 
         <div>
-          <textarea
-            name="textField"
-            id=""
-            cols="40"
-            rows="10"
-            placeholder="Введіть текст або загрузіть файл "
-            value={textField}
-            onChange={handleChange}
-          ></textarea>
+          <label htmlFor="">
+            {/* <input type="file" /> */}
+            <textarea
+              name="textField"
+              id=""
+              cols="40"
+              rows="10"
+              placeholder="Введіть текст або загрузіть файл "
+              value={textField}
+              onChange={handleChange}
+            ></textarea>
+          </label>
+        </div>
+
+        <div className={s.area}>
+          <textarea className={s.area_text}></textarea>
+          <div className={s.area_download}>
+            <span className={s.placeholder}>print or </span>
+            <label htmlFor="" className={s.labell}>
+              load file
+              <input className={s.input} type="file" accept=".doc, .docx" />
+            </label>
+          </div>
         </div>
 
         <div>
-          <label htmlFor="">
-            Ваша електронная почта
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-            />
-          </label>
+          <div>
+            {' '}
+            <label htmlFor="">
+              Ваша електронная почта
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-          <label htmlFor="">
-            Ваше ім'я
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-            />
-          </label>
+          <div>
+            {' '}
+            <label htmlFor="">
+              Ваше ім'я
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-          <label htmlFor="">
-            Коментар або покликання
-            <input
-              type="text"
-              name="coments"
-              value={coments}
-              onChange={handleChange}
-            />
-          </label>
+          <div>
+            {' '}
+            <label htmlFor="">
+              Коментар або покликання
+              <input
+                type="text"
+                name="coments"
+                value={coments}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-          <label htmlFor="language">Мова</label>
-          <input
-            list="languages"
-            id="language"
-            name="language"
-            value={language}
-            // onInput={e => {
-            //   setLanguage(e.currentTarget.value);
-            // }}
-            onChange={handleSubmit}
-          />
-          {service === 'Редагування' ? (
-            <datalist id="languages">
-              <option value="Українська" />
-              <option value="Російська" />
-              <option value="Англійська" />
-              <option value="Англійська(носій)" />
-            </datalist>
-          ) : (
-            <datalist id="languages">
-              <option value="Українська/російська - англ" />
-              <option value="Англійська - українська" />
-              <option value="Англійська - російська" />
-              <option value="Російська - українська" />
-              <option value="Українська - російська" />
-            </datalist>
-          )}
+          <div>
+            <label htmlFor="language">Мова</label>
+            <input
+              list="languages"
+              id="language"
+              name="language"
+              value={language}
+              // onInput={e => {
+              //   setLanguage(e.currentTarget.value);
+              // }}
+              onChange={handleSubmit}
+            />
+            {service === 'Редагування' ? (
+              <datalist id="languages">
+                <option value="Українська" />
+                <option value="Російська" />
+                <option value="Англійська" />
+                <option value="Англійська(носій)" />
+              </datalist>
+            ) : (
+              <datalist id="languages">
+                <option value="Українська/російська - англ" />
+                <option value="Англійська - українська" />
+                <option value="Англійська - російська" />
+                <option value="Російська - українська" />
+                <option value="Українська - російська" />
+              </datalist>
+            )}
+          </div>
         </div>
       </form>
     </div>

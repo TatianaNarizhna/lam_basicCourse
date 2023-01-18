@@ -1,9 +1,9 @@
 import React from 'react';
 
-const PricingForm = ({ price }) => {
+const PricingForm = ({ value }) => {
   return (
     <div>
-      <div>{price}</div>
+      <div>{value}</div>
       <p>грн</p>
     </div>
   );
