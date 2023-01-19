@@ -2,6 +2,27 @@
     box-sizing: border-box;
 }
 
+.placeholder {
+    color: #a0a1a4;
+}
+
+.labell {
+    color: #0068e4;
+    cursor: pointer;
+}
+
+.label:hover {
+    color: red;
+}
+
+.input {
+    display: none;
+}
+
+input {
+    overflow: visible;
+}
+
 .area {
     width: 100%;
     max-width: 660px;
@@ -10,6 +31,7 @@
 
 .area_text {
     resize: none;
+    overflow: auto;
     width: 100%;
     max-width: 660px;
     min-height: 200px;
@@ -33,23 +55,30 @@
     letter-spacing: -.0.5px;
 }
 
-.placeholder {
-    color: #a0a1a4;
+.area_file {
+    position: absolute;
+    display: flex;
+    inset: 0;
+    z-index: 1;
+    background-color: #eaeaea;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;  
 }
 
-.labell {
-    color: #0068e4;
+.file_name {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.file_length {
+    font-size: 15px;
+}
+
+.file_other {
+    font-size: 13px;
+    border-bottom: 1px dashed #999;
+    color: #999;
     cursor: pointer;
-}
-
-.label:hover {
-    color: red;
-}
-
-.input {
-    display: none;
-}
-
-input {
-    overflow: visible;
+    margin-top: 5px;
 }

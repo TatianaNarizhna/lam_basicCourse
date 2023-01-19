@@ -25,6 +25,7 @@ export default function App() {
 
   const onFormDataReceive = data => {
     setUserData(data);
+    console.log(data);
   };
 
   const { comments, language, service } = userData;

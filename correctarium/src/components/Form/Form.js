@@ -8,6 +8,8 @@ function FormElementData({ onSubmit }) {
   const [name, setName] = useState('');
   const [coments, setComents] = useState('');
   const [language, setLanguage] = useState('');
+  const [fileContent, setFileContent] = useState('');
+  const [fileName, setFileName] = useState('');
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -33,19 +35,38 @@ function FormElementData({ onSubmit }) {
         setComents(value);
         break;
 
-      // case 'language':
-      //   setLanguage(value);
-      //   break;
-
       default:
         break;
     }
   };
 
+  const handleFileChange = e => {
+    const file = e.currentTarget.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setFileName(file.name);
+      setFileContent(reader.result.split(' ').join('').length);
+    };
+    reader.readAsText(file);
+    reader.onerror = () => {
+      console.log('file error', reader.error);
+    };
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     const language = e.currentTarget.value;
-    onSubmit({ service, textField, email, name, coments, language });
+    onSubmit({
+      service,
+      textField,
+      email,
+      name,
+      coments,
+      language,
+      fileContent,
+      fileName,
+    });
     setLanguage(e.currentTarget.value);
   };
 
@@ -65,30 +86,37 @@ function FormElementData({ onSubmit }) {
           <option value="Редагування" />
         </datalist>
 
-        <div>
-          <label htmlFor="">
-            {/* <input type="file" /> */}
-            <textarea
-              name="textField"
-              id=""
-              cols="40"
-              rows="10"
-              placeholder="Введіть текст або загрузіть файл "
-              value={textField}
-              onChange={handleChange}
-            ></textarea>
-          </label>
-        </div>
-
         <div className={s.area}>
-          <textarea className={s.area_text}></textarea>
-          <div className={s.area_download}>
-            <span className={s.placeholder}>print or </span>
-            <label htmlFor="" className={s.labell}>
-              load file
-              <input className={s.input} type="file" accept=".doc, .docx" />
-            </label>
-          </div>
+          <textarea
+            name="textField"
+            value={textField}
+            onChange={handleChange}
+            className={s.area_text}
+          ></textarea>
+
+          {!textField && (
+            <div className={s.area_download}>
+              <span className={s.placeholder}>Введіть текст або </span>
+              <label htmlFor="upload" className={s.labell} aria-hidden="true">
+                завантажте файл
+                <input
+                  className={s.input}
+                  name="fileContent"
+                  type="file"
+                  id="upload"
+                  accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, .rtf, .txt, .pdf, .zip"
+                  onChange={handleFileChange}
+                />
+              </label>
+            </div>
+          )}
+          {fileContent && (
+            <div className={s.area_file}>
+              <p className={s.file_name}>{fileName}</p>
+              <p className={s.file_length}>Кількість символів: {fileContent}</p>
+              <p className={s.file_other}>завантажте файл</p>
+            </div>
+          )}
         </div>
 
         <div>
@@ -138,9 +166,6 @@ function FormElementData({ onSubmit }) {
               id="language"
               name="language"
               value={language}
-              // onInput={e => {
-              //   setLanguage(e.currentTarget.value);
-              // }}
               onChange={handleSubmit}
             />
             {service === 'Редагування' ? (
