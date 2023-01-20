@@ -46,7 +46,7 @@ function FormElementData({ onSubmit }) {
 
     reader.onload = () => {
       setFileName(file.name);
-      setFileContent(reader.result.split(' ').join('').length);
+      setFileContent(Number(reader.result.split(' ').join('').length));
     };
     reader.readAsText(file);
     reader.onerror = () => {
@@ -56,7 +56,8 @@ function FormElementData({ onSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const language = e.currentTarget.value;
+    const language = e.currentTarget.value.split('-').pop();
+
     onSubmit({
       service,
       textField,
@@ -177,11 +178,11 @@ function FormElementData({ onSubmit }) {
               </datalist>
             ) : (
               <datalist id="languages">
-                <option value="Українська/російська - англ" />
-                <option value="Англійська - українська" />
-                <option value="Англійська - російська" />
-                <option value="Російська - українська" />
-                <option value="Українська - російська" />
+                <option value="Українська/російська-Англійська" />
+                <option value="Англійська-Українська" />
+                <option value="Англійська-Російська" />
+                <option value="Російська-Українська" />
+                <option value="Українська-Російська" />
               </datalist>
             )}
           </div>

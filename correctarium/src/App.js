@@ -15,7 +15,7 @@ const priceTag = {
 };
 
 const workHours = ['10:00:00', '19:00:00'];
-const fileFormat = [null, 'doc', 'docx', 'rtf'];
+const fileFormat = ['null', 'doc', 'docx', 'rtf'];
 
 const deadlineTag = {};
 
@@ -24,14 +24,69 @@ export default function App() {
   const [price, setPrice] = useState(0);
 
   const onFormDataReceive = data => {
-    setUserData(data);
-    console.log(data);
+    const formdataResult = {
+      service: data.service,
+      textField: data.textField.split(' ').join('').length,
+      fileContent: data.fileContent,
+      fileName: data.fileName.match(/\.([^.]+)$/)?.[1],
+      language: data.language,
+    };
+
+    setUserData(formdataResult);
   };
 
-  const { comments, language, service } = userData;
+  console.log(userData);
+  // const arr = userData.language;
+  // console.log(arr);
 
-  useEffect(() => {}, []);
+  // зробити окремо usrEffect зі світч, а далі інший ефект або ф-я, яка буде рахувати!!!
+  useEffect(() => {
+    const { fileName, language, textField, fileContent } = userData;
 
+    let priceOfOneSym;
+    let minRate;
+    switch (language) {
+      case 'Українська':
+        priceOfOneSym = priceTag.ukrLan;
+        minRate = priceTag.minRateUkrRus;
+        break;
+
+      case 'Англійська':
+        priceOfOneSym = priceTag.englLan;
+        minRate = priceTag.minRateEngl;
+        break;
+
+      case 'Російська':
+        priceOfOneSym = priceTag.rusLan;
+        minRate = priceTag.minRateUkrRus;
+        break;
+
+      default:
+        break;
+    }
+
+    console.log(priceOfOneSym);
+
+    const handleCostChange = () => {};
+
+    let ttlCost = textField * priceOfOneSym;
+
+    // let ttlCost =
+    //   textField !== 0
+    //     ? Math.round(textField * priceOfOneSym)
+    //     : Math.round(fileContent * priceOfOneSym);
+
+    // const otherFilePrice =
+    //   fileFormat.includes(fileName) === true
+    //     ? ttlCost
+    //     : ttlCost * priceTag.otherFile;
+
+    ttlCost = ttlCost < minRate ? minRate : ttlCost;
+
+    setPrice(ttlCost);
+  }, [userData]);
+
+  // console.log(fileFormat.includes(userData.fileName));
   // const onPriceCalculate = () => {};
 
   return (
