@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import Section from 'components/Section/Section';
 import FormElement from 'components/Form/Form';
 import PricingForm from 'components/PricingForm/PricingForm';
+import { number } from 'prop-types';
 
 const languages = ['uk', 'en', 'ru'];
 
@@ -23,6 +24,9 @@ export default function App() {
   const [userData, setUserData] = useState({});
   const [price, setPrice] = useState(0);
 
+  const priceOfOneSym = useRef(0);
+  const minRate = useRef(0);
+
   const onFormDataReceive = data => {
     const formdataResult = {
       service: data.service,
@@ -35,59 +39,67 @@ export default function App() {
     setUserData(formdataResult);
   };
 
-  console.log(userData);
-  // const arr = userData.language;
-  // console.log(arr);
+  // console.log(userData);
 
-  // зробити окремо usrEffect зі світч, а далі інший ефект або ф-я, яка буде рахувати!!!
+  // let priceOfOneSym;
+  // let minRate;
   useEffect(() => {
     const { fileName, language, textField, fileContent } = userData;
 
-    let priceOfOneSym;
-    let minRate;
     switch (language) {
       case 'Українська':
-        priceOfOneSym = priceTag.ukrLan;
-        minRate = priceTag.minRateUkrRus;
+        priceOfOneSym.current = priceTag.ukrLan;
+        minRate.current = priceTag.minRateUkrRus;
         break;
 
       case 'Англійська':
-        priceOfOneSym = priceTag.englLan;
-        minRate = priceTag.minRateEngl;
+        priceOfOneSym.current = priceTag.englLan;
+        minRate.current = priceTag.minRateEngl;
         break;
 
       case 'Російська':
-        priceOfOneSym = priceTag.rusLan;
-        minRate = priceTag.minRateUkrRus;
+        priceOfOneSym.current = priceTag.rusLan;
+        minRate.current = priceTag.minRateUkrRus;
         break;
 
       default:
         break;
     }
 
-    console.log(priceOfOneSym);
+    if (language) {
+      let ttlPrice = textField * priceOfOneSym.current;
+      setPrice(ttlPrice);
+    }
+  }, [userData, price]);
 
-    const handleCostChange = () => {};
+  // -----------------
+  // useEffect(() => {
+  //   const { fileName, textField, fileContent } = userData;
 
-    let ttlCost = textField * priceOfOneSym;
+  //   console.log(priceOfOneSym);
 
-    // let ttlCost =
-    //   textField !== 0
-    //     ? Math.round(textField * priceOfOneSym)
-    //     : Math.round(fileContent * priceOfOneSym);
+  //   let ttlCost = textField * priceOfOneSym;
 
-    // const otherFilePrice =
-    //   fileFormat.includes(fileName) === true
-    //     ? ttlCost
-    //     : ttlCost * priceTag.otherFile;
+  //   console.log(priceOfOneSym);
+  //   let ttlCost =
+  //     textField !== 0
+  //       ? Math.round(textField * priceOfOneSym.current)
+  //       : Math.round(fileContent * priceOfOneSym).current;
 
-    ttlCost = ttlCost < minRate ? minRate : ttlCost;
+  //   const otherFilePrice =
+  //     fileFormat.includes(fileName) === true
+  //       ? ttlCost
+  //       : ttlCost * priceTag.otherFile;
 
-    setPrice(ttlCost);
-  }, [userData]);
+  //   ttlCost = ttlCost < minRate.current ? minRate.current : ttlCost;
 
-  // console.log(fileFormat.includes(userData.fileName));
-  // const onPriceCalculate = () => {};
+  //   if (ttlCost === 'number') {
+  //     setPrice(ttlCost);
+  //   } else {
+  //     setPrice(0);
+  //   }
+  //   console.log(ttlCost);
+  // }, [userData, price]);
 
   return (
     <>
