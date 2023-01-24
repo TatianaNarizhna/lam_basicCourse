@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Section from 'components/Section/Section';
 import FormElement from 'components/Form/Form';
 import PricingForm from 'components/PricingForm/PricingForm';
-import { number } from 'prop-types';
 
 const languages = ['uk', 'en', 'ru'];
+
+const workHours = ['10:00:00', '19:00:00'];
+
+const deadlineTag = {};
 
 const priceTag = {
   ukrLan: 0.05,
@@ -14,11 +17,7 @@ const priceTag = {
   minRateEngl: 120,
   otherFile: 1.2,
 };
-
-const workHours = ['10:00:00', '19:00:00'];
 const fileFormat = ['null', 'doc', 'docx', 'rtf'];
-
-const deadlineTag = {};
 
 export default function App() {
   const [userData, setUserData] = useState({});
@@ -39,12 +38,38 @@ export default function App() {
     setUserData(formdataResult);
   };
 
-  // console.log(userData);
+  const onTtlPriceCalculate = useCallback(() => {
+    const { textField, fileContent, fileName } = userData;
 
-  // let priceOfOneSym;
-  // let minRate;
+    let ttlCost;
+    if (fileFormat.includes(fileName)) {
+      ttlCost = Math.round(fileContent * priceOfOneSym.current);
+    } else if (textField !== 0) {
+      ttlCost = Math.round(textField * priceOfOneSym.current);
+    } else {
+      ttlCost = Math.round(
+        fileContent * priceOfOneSym.current * priceTag.otherFile,
+      );
+    }
+
+    // console.log(fileFormat);
+    // console.log(fileName);
+
+    // let ttlCost =
+    //   textField !== 0
+    //     ? Math.round(textField * priceOfOneSym.current)
+    //     : Math.round(fileContent * priceOfOneSym.current);
+
+    // const otherFilePrice =
+    //   fileFormat.includes(fileName) === true
+    //     ? ttlCost
+    //     : ttlCost * priceTag.otherFile;
+
+    return (ttlCost = ttlCost < minRate.current ? minRate.current : ttlCost);
+  }, [userData]);
+
   useEffect(() => {
-    const { fileName, language, textField, fileContent } = userData;
+    const { language } = userData;
 
     switch (language) {
       case 'Українська':
@@ -67,39 +92,10 @@ export default function App() {
     }
 
     if (language) {
-      let ttlPrice = textField * priceOfOneSym.current;
-      setPrice(ttlPrice);
+      const total = onTtlPriceCalculate();
+      setPrice(total);
     }
-  }, [userData, price]);
-
-  // -----------------
-  // useEffect(() => {
-  //   const { fileName, textField, fileContent } = userData;
-
-  //   console.log(priceOfOneSym);
-
-  //   let ttlCost = textField * priceOfOneSym;
-
-  //   console.log(priceOfOneSym);
-  //   let ttlCost =
-  //     textField !== 0
-  //       ? Math.round(textField * priceOfOneSym.current)
-  //       : Math.round(fileContent * priceOfOneSym).current;
-
-  //   const otherFilePrice =
-  //     fileFormat.includes(fileName) === true
-  //       ? ttlCost
-  //       : ttlCost * priceTag.otherFile;
-
-  //   ttlCost = ttlCost < minRate.current ? minRate.current : ttlCost;
-
-  //   if (ttlCost === 'number') {
-  //     setPrice(ttlCost);
-  //   } else {
-  //     setPrice(0);
-  //   }
-  //   console.log(ttlCost);
-  // }, [userData, price]);
+  }, [userData, price, onTtlPriceCalculate]);
 
   return (
     <>
