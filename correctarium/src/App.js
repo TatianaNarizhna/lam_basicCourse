@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Section from 'components/Section/Section';
 import FormElement from 'components/Form/Form';
 import PricingForm from 'components/PricingForm/PricingForm';
-
-const languages = ['uk', 'en', 'ru'];
-
-const workHours = ['10:00:00', '19:00:00'];
-
-const deadlineTag = {};
+import Deadline from 'components/Deadline/Deadline';
 
 const priceTag = {
   ukrLan: 0.05,
@@ -43,11 +38,11 @@ export default function App() {
 
     let ttlCost;
     if (fileFormat.includes(fileName)) {
-      ttlCost = Math.round(fileContent * priceOfOneSym.current);
+      ttlCost = Math.ceil(fileContent * priceOfOneSym.current);
     } else if (textField !== 0) {
-      ttlCost = Math.round(textField * priceOfOneSym.current);
+      ttlCost = Math.ceil(textField * priceOfOneSym.current);
     } else {
-      ttlCost = Math.round(
+      ttlCost = Math.ceil(
         fileContent * priceOfOneSym.current * priceTag.otherFile,
       );
     }
@@ -102,6 +97,7 @@ export default function App() {
       <Section title="Замовити переклад або редагування">
         <FormElement onSubmit={onFormDataReceive} />
         <PricingForm value={price} />
+        <Deadline data={userData} />
       </Section>
     </>
   );
