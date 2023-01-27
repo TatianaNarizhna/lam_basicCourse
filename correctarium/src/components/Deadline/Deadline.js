@@ -19,24 +19,37 @@ const Deadline = ({ data }) => {
     const halfAnHour = 0.5;
 
     let timeForWork;
-    console.log(typeof textField);
-    console.log(fileContent);
-    console.log(language);
-    console.log(editingEngSign);
-    if (language === 'Англійська') {
-      timeForWork = Number((textField / editingEngSign).toFixed(3));
-    } else if (language === 'Українська' || language === 'Російська') {
-      timeForWork = textField / editingUkrRusSign;
+    let langForEdit;
+
+    switch (language) {
+      case 'Англійська':
+        langForEdit = editingEngSign;
+        break;
+
+      case 'Українська':
+        langForEdit = editingUkrRusSign;
+        break;
+
+      case 'Російська':
+        langForEdit = editingUkrRusSign;
+        break;
+
+      default:
+        break;
     }
-    console.log(timeForWork);
+
+    if (textField) {
+      timeForWork = textField / langForEdit;
+    } else if (fileContent) {
+      timeForWork = fileContent / langForEdit;
+    }
+
     if (timeForWork < 1) {
       timeForWork = getOneHour;
     }
 
-    let ttlTimeForWork = halfAnHour + timeForWork;
-
     return {
-      needTimeForWork: ttlTimeForWork,
+      needTimeForWork: halfAnHour + timeForWork,
     };
   };
 
@@ -51,3 +64,9 @@ export default Deadline;
 // let getOneHour = parseInt((hour / (1000 * 60 * 60)) % 24);
 // const halfAnHour = 1000 * 60 * 30;
 // let getHalfAnHour = parseInt((halfAnHour / (1000 * 60)) % 60);
+
+// if (language === 'Англійська') {
+//   timeForWork = Number((textField / editingEngSign).toFixed(3));
+// } else if (language === 'Українська' || language === 'Російська') {
+//   timeForWork = textField / editingUkrRusSign;
+// }
