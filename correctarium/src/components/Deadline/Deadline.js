@@ -48,11 +48,51 @@ const Deadline = ({ data }) => {
       timeForWork = getOneHour;
     }
 
+    let ttlTimeToNeed = halfAnHour + timeForWork;
+    let calculation = deadlineCalculate(ttlTimeToNeed);
+
     return {
-      needTimeForWork: halfAnHour + timeForWork,
+      needTimeForWork: ttlTimeToNeed,
     };
   };
 
+  const deadlineCalculate = time => {
+    let startDayToEdit = new Date();
+    // let workingDays = startDayToEdit
+    let startTimeToEdit = startDayToEdit.getHours();
+    let getDate = startDayToEdit.getDate();
+    let getDay = startDayToEdit.getDay();
+
+    const hoursPerDay = 9;
+    const startWorkingHours = 10;
+    const endWorkingHours = 19;
+    let daysForEdit;
+
+    daysForEdit =
+      time / hoursPerDay >= 1 ? Number((time / hoursPerDay).toFixed(1)) : 0;
+
+    let leftHours = time % hoursPerDay;
+
+    startDayToEdit.setDate(startDayToEdit.getDate() + daysForEdit);
+    startDayToEdit.setHours(startDayToEdit.getHours() + leftHours);
+
+    if (startTimeToEdit >= endWorkingHours) {
+      leftHours = startTimeToEdit - endWorkingHours;
+      startDayToEdit.setDate(getDate + 1);
+      startDayToEdit.setHours(startWorkingHours + leftHours);
+    } else if (startTimeToEdit < startWorkingHours) {
+      startDayToEdit.setHours(startWorkingHours + leftHours);
+    }
+
+    // if (startTimeToEdit > endWorkingHours) {
+    // }
+
+    // if (getDay >= 1 || getDay <= 5) {
+    // }
+    console.log(startDayToEdit.getDate());
+  };
+
+  console.log(deadlineCalculate());
   console.log(timeCalculate());
 
   return <div></div>;
