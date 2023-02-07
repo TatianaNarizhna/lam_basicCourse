@@ -16,7 +16,7 @@ const Deadline = ({ data }) => {
   const timeCalculate = () => {
     const hour = 1000 * 60 * 60;
     let getOneHour = parseInt((hour / (1000 * 60 * 60)) % 24);
-    const halfAnHour30 = 1000 * 60 * 50;
+    const halfAnHour30 = 1000 * 60 * 30;
     let getHalfAnHour = parseInt((halfAnHour30 / (1000 * 60)) % 60);
 
     const halfAnHour = 0.5;
@@ -50,24 +50,26 @@ const Deadline = ({ data }) => {
       timeForWork = (fileContent / langForEdit).toFixed(2);
     }
 
-    let minutes = Number((timeForWork + '').split('.')[1]);
+    let minutes =
+      timeForWork < 1 ? 0 : Number((timeForWork + '').split('.')[1]);
+    // console.log(timeForWork);
+    // console.log(minutes);
     let hours = Number.parseInt(timeForWork);
     timeForWork = hours;
 
     if (timeForWork < 1) {
       timeForWork = getOneHour;
-      console.log('less one hour');
     }
 
     // let ttlTimeToNeed = halfAnHour + timeForWork;
 
-    let ttlTimeToNeed = getHalfAnHour + minutes + timeForWork;
+    // let ttlTimeToNeed = getHalfAnHour + minutes + timeForWork;
     let ttlMinRes = getHalfAnHour + minutes;
     if (ttlMinRes >= 60) {
       timeForWork += 1;
       ttlMinRes = ttlMinRes - 60;
     }
-    console.log(ttlTimeToNeed);
+    // console.log(ttlTimeToNeed);
     let calculation = deadlineCalculate(timeForWork, ttlMinRes);
 
     return {
@@ -77,11 +79,12 @@ const Deadline = ({ data }) => {
     };
   };
 
-  const deadlineCalculate = (hoursRes, minRes, time) => {
+  const deadlineCalculate = (hoursRes, minRes) => {
     let startDayToEdit = new Date();
-    console.log(startDayToEdit);
+    // console.log(startDayToEdit);
     // let workingDays = startDayToEdit
     let startTimeToEdit = startDayToEdit.getHours();
+    // console.log(startTimeToEdit);
     let getMinutes = startDayToEdit.getMinutes();
 
     let getDate = startDayToEdit.getDate();
@@ -90,37 +93,70 @@ const Deadline = ({ data }) => {
 
     const hoursPerDay = 9;
     const startWorkingHours = 10;
+    const startWorkingMinutes = 0;
     const endWorkingHours = 19;
     let daysForEdit;
 
     daysForEdit =
-      time / hoursPerDay >= 1 ? Number((time / hoursPerDay).toFixed(1)) : 0;
+      hoursRes / hoursPerDay >= 1
+        ? Math.round(Number(hoursRes / hoursPerDay))
+        : 0;
 
-    let leftHours = time % hoursPerDay;
+    let leftHours = hoursRes % hoursPerDay;
     let leftWorkingHours = endWorkingHours - startDayToEdit;
     // console.log(startTimeToEdit);
+    console.log(hoursRes);
     console.log(leftHours.toFixed(2));
 
     startDayToEdit.setDate(startDayToEdit.getDate() + daysForEdit);
+    console.log(startDayToEdit);
     startDayToEdit.setHours(startDayToEdit.getHours() + leftHours);
+    startDayToEdit.setMinutes(startDayToEdit.getMinutes() + minRes);
+    console.log(startDayToEdit);
 
     if (startTimeToEdit >= endWorkingHours) {
       // leftHours = startTimeToEdit - endWorkingHours;
-      startDayToEdit.setDate(getDate + 1);
+      console.log(daysForEdit);
+      startDayToEdit.setDate(getDate + daysForEdit);
       startDayToEdit.setHours(startWorkingHours + leftHours);
-      console.log(leftHours);
+      startDayToEdit.setMinutes(startWorkingMinutes + minRes);
       console.log('1');
     } else if (startTimeToEdit < startWorkingHours) {
       startDayToEdit.setHours(startWorkingHours + leftHours);
+      startDayToEdit.setMinutes(startWorkingHours + minRes);
       console.log('2');
     } else if (startTimeToEdit < endWorkingHours) {
-      startDayToEdit.setHours(startTimeToEdit + 5400000);
+      startDayToEdit.setHours(startTimeToEdit + leftHours);
+      startDayToEdit.setMinutes(startTimeToEdit + minRes);
       console.log('3');
-    } else if (leftWorkingHours < time) {
+    } else if (leftWorkingHours < hoursRes) {
       startDayToEdit.setDate(getDate + 1);
       startDayToEdit.setHours(startWorkingHours + leftHours);
+      startDayToEdit.setMinutes(startWorkingHours + minRes);
       console.log('4');
     }
+
+    // if (startTimeToEdit >= endWorkingHours) {
+    //   // leftHours = startTimeToEdit - endWorkingHours;
+    //   startDayToEdit.setDate(getDate + 1);
+    //   startDayToEdit.setHours(startWorkingHours + leftHours);
+    //   startDayToEdit.setMinutes(startWorkingHours + minRes);
+    //   console.log(leftHours);
+    //   console.log('1');
+    // } else if (startTimeToEdit < startWorkingHours) {
+    //   startDayToEdit.setHours(startWorkingHours + leftHours);
+    //   startDayToEdit.setMinutes(startWorkingHours + minRes);
+    //   console.log('2');
+    // } else if (startTimeToEdit < endWorkingHours) {
+    //   startDayToEdit.setHours(startTimeToEdit + leftHours);
+    //   startDayToEdit.setMinutes(startTimeToEdit + minRes);
+    //   console.log('3');
+    // } else if (leftWorkingHours < hoursRes) {
+    //   startDayToEdit.setDate(getDate + 1);
+    //   startDayToEdit.setHours(startWorkingHours + leftHours);
+    //   startDayToEdit.setMinutes(startWorkingHours + minRes);
+    //   console.log('4');
+    // }
 
     // if (startTimeToEdit > endWorkingHours) {
     // }
