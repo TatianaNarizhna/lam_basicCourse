@@ -47,19 +47,6 @@ export default function App() {
       );
     }
 
-    // console.log(fileFormat);
-    // console.log(fileName);
-
-    // let ttlCost =
-    //   textField !== 0
-    //     ? Math.round(textField * priceOfOneSym.current)
-    //     : Math.round(fileContent * priceOfOneSym.current);
-
-    // const otherFilePrice =
-    //   fileFormat.includes(fileName) === true
-    //     ? ttlCost
-    //     : ttlCost * priceTag.otherFile;
-
     return (ttlCost = ttlCost < minRate.current ? minRate.current : ttlCost);
   }, [userData]);
 
@@ -102,3 +89,16 @@ export default function App() {
     </>
   );
 }
+
+// console.log(fileFormat);
+// console.log(fileName);
+
+// let ttlCost =
+//   textField !== 0
+//     ? Math.round(textField * priceOfOneSym.current)
+//     : Math.round(fileContent * priceOfOneSym.current);
+
+// const otherFilePrice =
+//   fileFormat.includes(fileName) === true
+//     ? ttlCost
+//     : ttlCost * priceTag.otherFile;
