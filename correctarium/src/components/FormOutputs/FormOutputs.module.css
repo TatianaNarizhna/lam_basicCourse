@@ -1,0 +1,48 @@
+.content__outputs {
+    padding-top: 108px;
+    text-align: right;
+}
+
+
+.content__price {
+    display: inline-flex;
+    align-items: flex-end;
+  
+}
+
+.number {
+    margin-left: auto;
+    font-size: 60px;
+    line-height: 1.37;
+    font-weight: 100;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: -.19px;
+    text-align: right;
+    color: #0068e4;
+}
+
+.currency {
+    color: #0068e4;
+    margin-bottom: 13px; 
+}
+
+.correctarium_button {
+    display: inline-block;
+    padding: 18px 20px;
+    width: 260px;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff4d;
+    background-color: #1b2235;
+    cursor: default;
+    text-align: center;
+
+}
+
+

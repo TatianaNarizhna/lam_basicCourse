@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import s from './Deadline.module.css';
 
 const Deadline = ({ data }) => {
   const { textField, fileContent, language } = data;
 
+  const [deadline, setDeadline] = useState('');
+
   const editingUkrRusSign = 1333;
   const editingEngSign = 333;
 
-  const timeCalculate = () => {
+  const timeCalculate = useCallback(() => {
     const hour = 1000 * 60 * 60;
     let getOneHour = parseInt((hour / (1000 * 60 * 60)) % 24);
     const halfAnHour30 = 1000 * 60 * 30;
@@ -41,8 +44,8 @@ const Deadline = ({ data }) => {
     let minutes =
       timeForWork < 1 ? 0 : Number((timeForWork + '').split('.')[1]);
 
-    let hours = Number.parseInt(timeForWork);
-    timeForWork = hours;
+    let hourFinRes = Number.parseInt(timeForWork);
+    timeForWork = hourFinRes;
 
     if (timeForWork < 1) {
       timeForWork = getOneHour;
@@ -54,13 +57,12 @@ const Deadline = ({ data }) => {
       ttlMinRes = ttlMinRes - 60;
     }
 
-    let calculation = deadlineCalculate(timeForWork, ttlMinRes);
+    const calculation = deadlineCalculate(timeForWork, ttlMinRes);
 
-    return {
-      needTimeForWork: `hours: ${timeForWork}, mins: ${ttlMinRes}`,
-      deadline: calculation.toLocaleString('en-GB'),
-    };
-  };
+    return ` hours: ${timeForWork}, mins: ${ttlMinRes} \n Be ready: ${calculation.toLocaleString(
+      'en-GB',
+    )}`;
+  }, [fileContent, language, textField]);
 
   const deadlineCalculate = (hoursRes, minRes) => {
     let startDayToEdit = new Date();
@@ -108,9 +110,16 @@ const Deadline = ({ data }) => {
     return startDayToEdit;
   };
 
-  console.log(timeCalculate());
+  const finalRes = timeCalculate();
 
-  return <div></div>;
+  useEffect(() => {
+    setDeadline(finalRes);
+  }, [finalRes]);
+
+  // console.log(timeCalculate());
+
+  console.log(finalRes);
+  return <div className={s.line}>Need time: {language && deadline}</div>;
 };
 
 export default Deadline;

@@ -1,0 +1,13 @@
+.line {
+    height: 100px;
+    white-space: pre-line;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 80;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: -.19px;
+    text-align: left;
+    color: #0068e4;
+    text-align: right;
+}

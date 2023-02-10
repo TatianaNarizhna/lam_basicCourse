@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Section from 'components/Section/Section';
 import FormElement from 'components/Form/Form';
-import PricingForm from 'components/PricingForm/PricingForm';
+import FormOutputs from 'components/FormOutputs/FormOutputs';
 import Deadline from 'components/Deadline/Deadline';
 
 const priceTag = {
@@ -81,10 +81,14 @@ export default function App() {
 
   return (
     <>
-      <Section title="Замовити переклад або редагування">
-        <FormElement onSubmit={onFormDataReceive} />
-        <PricingForm value={price} />
-        <Deadline data={userData} />
+      <Section>
+        <FormElement
+          onSubmit={onFormDataReceive}
+          title="Замовити переклад або редагування"
+        />
+        <FormOutputs value={price}>
+          <Deadline data={userData} />
+        </FormOutputs>
       </Section>
     </>
   );

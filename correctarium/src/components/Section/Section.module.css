@@ -1,0 +1,15 @@
+.section_main {
+    display: grid;
+    grid-template-columns: 17fr 6fr;
+    grid-gap: 10px;
+    width: 100%;
+    max-width: 1280px;
+    padding-left: 60px;
+    padding-right: 60px;
+    border-radius: 16px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+

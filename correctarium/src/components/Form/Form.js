@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import s from './Form.module.css';
 
-function FormElementData({ onSubmit }) {
+function FormElementData({ onSubmit, title }) {
   const [service, setService] = useState('');
   const [textField, setTextField] = useState('');
   const [email, setEmail] = useState('');
@@ -73,6 +73,7 @@ function FormElementData({ onSubmit }) {
 
   return (
     <div>
+      <h2 className={s.main_title}>{title}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="service">Послуга</label>
         <input
