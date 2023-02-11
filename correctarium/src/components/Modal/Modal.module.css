@@ -1,0 +1,20 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1b223599;
+}
+
+.content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 561px;
+    min-height: 279px;
+    padding: 30px;
+    background-color: white;
+    
+}
