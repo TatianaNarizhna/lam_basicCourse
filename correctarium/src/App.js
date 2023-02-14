@@ -3,6 +3,7 @@ import Section from 'components/Section/Section';
 import FormElement from 'components/Form/Form';
 import FormOutputs from 'components/FormOutputs/FormOutputs';
 import Deadline from 'components/Deadline/Deadline';
+import Footer from 'components/Footer/Footer';
 
 const priceTag = {
   ukrLan: 0.05,
@@ -21,6 +22,7 @@ export default function App() {
   const priceOfOneSym = useRef(0);
   const minRate = useRef(0);
 
+  console.log(userData);
   const onFormDataReceive = data => {
     const formdataResult = {
       service: data.service,
@@ -29,7 +31,7 @@ export default function App() {
       fileName: data.fileName.match(/\.([^.]+)$/)?.[1],
       language: data.language,
     };
-
+    // console.log(formdataResult);
     setUserData(formdataResult);
   };
 
@@ -90,6 +92,7 @@ export default function App() {
           <Deadline data={userData} />
         </FormOutputs>
       </Section>
+      <Footer />
     </>
   );
 }

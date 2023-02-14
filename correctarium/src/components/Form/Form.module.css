@@ -3,14 +3,55 @@
 }
 
 .main_title {
-    font-family: "Montserrat";
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 70px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.47;
+    letter-spacing: normal;
+    margin: 0;
+    max-width: 100%;
 }
 
+.main_form{
+    margin-top: 70px;
+}
+
+.margin_select {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.label_select {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.57;
+    letter-spacing: -.05px;
+    color: #a0a1a4;
+}
+
+/* .form_control {
+    border-radius: 16px;
+    border: 1px solid #eee;
+    outline: none;
+ 
+} */
+
 .placeholder {
+    font-family: "Montserrat", sans-serif;
     color: #a0a1a4;
 }
 
 .labell {
+    font-family: "Montserrat", sans-serif;
     color: #0068e4;
     cursor: pointer;
 }
@@ -28,9 +69,11 @@ input {
 }
 
 .area {
+    position: relative;
+    margin-bottom: 25px;
     width: 100%;
     max-width: 660px;
-    position: relative;
+  
 }
 
 .area_text {
@@ -40,11 +83,15 @@ input {
     max-width: 660px;
     min-height: 200px;
     min-width: 100%;
-    border-radius: 16px;
-    border: 1px solid #eee;
+    border-radius: 8px;
+    border: 1px solid rgb(207, 206, 206);
     outline: none;
     padding: 20px 30px;
     margin-bottom: 25px;
+}
+
+.area_text:focus {
+    border: 1px solid rgb(54, 82, 241);
 }
 
 .area_download {
@@ -86,3 +133,12 @@ input {
     cursor: pointer;
     margin-top: 5px;
 }
+
+.data_flex{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: "Montserrat", sans-serif;
+    color: #a0a1a4;
+}
+

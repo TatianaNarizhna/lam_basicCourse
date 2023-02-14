@@ -4,8 +4,7 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 function FormElementData({ onSubmit, title }) {
   const [service, setService] = useState('');
@@ -64,7 +63,7 @@ function FormElementData({ onSubmit, title }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const language = e.target.value.split('-').pop();
+    const language = e.currentTarget.value.split('-').pop();
 
     onSubmit({
       service,
@@ -76,13 +75,26 @@ function FormElementData({ onSubmit, title }) {
       fileContent,
       fileName,
     });
-    setLanguage(e.target.value);
+    setLanguage(e.currentTarget.value);
   };
 
   return (
     <div>
       <h2 className={s.main_title}>{title}</h2>
       <form onSubmit={handleSubmit} className={s.main_form}>
+        {/* <label htmlFor="service">Послуга</label>
+        <input
+          list="services"
+          id="service"
+          name="service"
+          value={service}
+          onChange={handleChange}
+        />
+        <datalist id="services">
+          <option value="Переклад" />
+          <option value="Редагування" />
+        </datalist> */}
+
         <Box sx={{ width: 345 }} className={s.margin_select}>
           <FormControl fullWidth className={s.pad}>
             <InputLabel id="demo-simple-select-label">Послуга</InputLabel>
@@ -133,63 +145,49 @@ function FormElementData({ onSubmit, title }) {
           )}
         </div>
 
-        <div className={s.data_flex}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              '& > :not(style)': { m: 1 },
-            }}
-          >
-            <TextField
-              sx={{
-                width: 345,
-              }}
-              id="demo-helper-text-aligned-no-helper"
-              label="Ваша електронная почта"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              '& > :not(style)': { m: 1 },
-            }}
-          >
-            <TextField
-              sx={{
-                width: 345,
-              }}
-              id="demo-helper-text-aligned-no-helper"
-              label="Ваше ім'я"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              '& > :not(style)': { m: 1 },
-            }}
-          >
-            <TextField
-              sx={{
-                width: 345,
-              }}
-              id="demo-helper-text-aligned-no-helper"
-              label="Коментар або покликання"
-            />
-          </Box>
+        <div>
+          <div>
+            {' '}
+            <label htmlFor="">
+              Ваша електронная почта
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-          {service === 'Редагування' ? (
-            <Box
-              className={s.margin_select}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                '& > :not(style)': { m: 1 },
-              }}
-            >
-              <FormControl sx={{ width: 345 }} fullWidth>
+          <div>
+            {' '}
+            <label htmlFor="">
+              Ваше ім'я
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            {' '}
+            <label htmlFor="">
+              Коментар або покликання
+              <input
+                type="text"
+                name="coments"
+                value={coments}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            <Box sx={{ width: 345 }} className={s.margin_select}>
+              <FormControl fullWidth className={s.pad}>
                 <InputLabel id="demo-simple-select-label">
                   Мовна пара
                 </InputLabel>
@@ -201,48 +199,65 @@ function FormElementData({ onSubmit, title }) {
                   label="language"
                   onChange={handleSubmit}
                 >
-                  <MenuItem value={'Українська'}>Українська</MenuItem>
-                  <MenuItem value={'Російська'}>Російська</MenuItem>
-                  <MenuItem value={'Англійська'}>Англійська</MenuItem>
-                  <MenuItem value={'Англійська(носій)'}>
-                    Англійська(носій)
-                  </MenuItem>
+                  {service === 'Редагування' ? (
+                    <>
+                      <MenuItem value={'Українська'}>Українська</MenuItem>
+                      <MenuItem value={'Російська'}>Російська</MenuItem>
+                      <MenuItem value={'Англійська'}>Англійська</MenuItem>
+                      <MenuItem value={'Англійська(носій)'}>
+                        Англійська(носій)
+                      </MenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <MenuItem value={'Українська/російська-Англійська'}>
+                        Українська/російська-Англійська
+                      </MenuItem>
+                      <MenuItem value={'Англійська-Українська'}>
+                        Англійська-Українська
+                      </MenuItem>
+                      <MenuItem value={'Англійська-Російська'}>
+                        Англійська-Російська
+                      </MenuItem>
+                      <MenuItem value={'Російська-Українська'}>
+                        Російська-Українська
+                      </MenuItem>
+                      <MenuItem value={'Українська-Російська'}>
+                        Українська-Російська
+                      </MenuItem>
+                    </>
+                  )}
                 </Select>
               </FormControl>
             </Box>
-          ) : (
-            <Box className={s.margin_select}>
-              <FormControl sx={{ width: 345 }} fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Мовна пара
-                </InputLabel>
-                <Select
-                  name="language"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={language}
-                  label="language"
-                  onChange={handleSubmit}
-                >
-                  <MenuItem value={'Українська/російська-Англійська'}>
-                    Українська/російська-Англійська
-                  </MenuItem>
-                  <MenuItem value={'Англійська-Українська'}>
-                    Англійська-Українська
-                  </MenuItem>
-                  <MenuItem value={'Англійська-Російська'}>
-                    Англійська-Російська
-                  </MenuItem>
-                  <MenuItem value={'Російська-Українська'}>
-                    Російська-Українська
-                  </MenuItem>
-                  <MenuItem value={'Українська-Російська'}>
-                    Українська-Російська
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          )}
+          </div>
+
+          {/* <div>
+            <label htmlFor="language">Мовна пара</label>
+            <input
+              list="languages"
+              id="language"
+              name="language"
+              value={language}
+              onChange={handleSubmit}
+            />
+            {service === 'Редагування' ? (
+              <datalist id="languages">
+                <option value="Українська" />
+                <option value="Російська" />
+                <option value="Англійська" />
+                <option value="Англійська(носій)" />
+              </datalist>
+            ) : (
+              <datalist id="languages">
+                <option value="Українська/російська-Англійська" />
+                <option value="Англійська-Українська" />
+                <option value="Англійська-Російська" />
+                <option value="Російська-Українська" />
+                <option value="Українська-Російська" />
+              </datalist>
+            )}
+          </div> */}
         </div>
       </form>
     </div>
