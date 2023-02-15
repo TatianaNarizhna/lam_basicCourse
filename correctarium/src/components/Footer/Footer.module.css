@@ -16,4 +16,15 @@
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
+    font-family: "Montserrat", sans-serif;
+    color: #454c5d;
+}
+
+.terms {
+    text-decoration: none;
+    color: #454c5d;
+}
+
+.email {
+    color: #454c5d;
 }
