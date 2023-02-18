@@ -265,3 +265,36 @@ function FormElementData({ onSubmit, title }) {
 }
 
 export default FormElementData;
+
+// let hour = 1000 * 60 * 60;
+// let getOneHour = parseInt((hour / (1000 * 60 * 60)) % 24);
+// const halfAnHour = 1000 * 60 * 30;
+// let getHalfAnHour = parseInt((halfAnHour / (1000 * 60)) % 60);
+
+// if (language === 'Англійська') {
+//   timeForWork = Number((textField / editingEngSign).toFixed(3));
+// } else if (language === 'Українська' || language === 'Російська') {
+//   timeForWork = textField / editingUkrRusSign;
+// }
+
+// if (startTimeToEdit >= endWorkingHours) {
+//   // leftHours = startTimeToEdit - endWorkingHours;
+//   startDayToEdit.setDate(getDate + 1);
+//   startDayToEdit.setHours(startWorkingHours + leftHours);
+//   startDayToEdit.setMinutes(startWorkingHours + minRes);
+//   console.log(leftHours);
+//   console.log('1');
+// } else if (startTimeToEdit < startWorkingHours) {
+//   startDayToEdit.setHours(startWorkingHours + leftHours);
+//   startDayToEdit.setMinutes(startWorkingHours + minRes);
+//   console.log('2');
+// } else if (startTimeToEdit < endWorkingHours) {
+//   startDayToEdit.setHours(startTimeToEdit + leftHours);
+//   startDayToEdit.setMinutes(startTimeToEdit + minRes);
+//   console.log('3');
+// } else if (leftWorkingHours < hoursRes) {
+//   startDayToEdit.setDate(getDate + 1);
+//   startDayToEdit.setHours(startWorkingHours + leftHours);
+//   startDayToEdit.setMinutes(startWorkingHours + minRes);
+//   console.log('4');
+// }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Section from 'components/Section/Section';
+import Section from './components/Section/Section.js';
 import FormElement from 'components/Form/Form';
 import FormOutputs from 'components/FormOutputs/FormOutputs';
 import Deadline from 'components/Deadline/Deadline';
@@ -39,6 +39,7 @@ export default function App() {
     const { textField, fileContent, fileName } = userData;
 
     let ttlCost;
+
     if (fileFormat.includes(fileName)) {
       ttlCost = Math.ceil(fileContent * priceOfOneSym.current);
     } else if (textField !== 0) {
