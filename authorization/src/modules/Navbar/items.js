@@ -11,11 +11,11 @@ const items = [
     text: 'login',
     link: '/login',
   },
-  {
-    id: nanoid(),
-    text: 'me',
-    link: '/me',
-  },
+  // {
+  //   id: nanoid(),
+  //   text: 'me',
+  //   link: '/me',
+  // },
 ];
 
 export default items;

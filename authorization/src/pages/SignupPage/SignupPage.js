@@ -6,6 +6,7 @@ import s from './SignupPage.module.css';
 
 const SignupPage = () => {
   const [value, setValue] = useState('');
+  const [logged, setLogged] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,12 +23,13 @@ const SignupPage = () => {
 
     if (value) {
       navigate('/me', { replace: true });
+      setLogged(true);
     }
     authOperations
       .signup(value)
 
       .catch(console.log(Error));
-  }, [value, navigate]);
+  }, [value, navigate, logged]);
 
   return (
     <div className={s.RegisterContainer}>

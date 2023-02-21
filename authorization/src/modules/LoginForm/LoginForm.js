@@ -30,7 +30,7 @@ const LoginForm = ({ onSubmit }) => {
 
   return (
     <div className={s.RegisterContainer}>
-      <h2 className={s.title}>Signup Page</h2>
+      <h2 className={s.title}>Login Page</h2>
 
       <form onSubmit={handleSubmit} className={s.form} autoComplete="off">
         <div className="mb-3">

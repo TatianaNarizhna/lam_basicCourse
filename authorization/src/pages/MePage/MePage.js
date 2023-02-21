@@ -1,5 +1,12 @@
+import { NavLink } from 'react-router-dom';
+
 const MePage = () => {
-  return <h2>Me page</h2>;
+  return (
+    <div>
+      <NavLink to="/me">me</NavLink>
+      <button type="button">logout</button>
+    </div>
+  );
 };
 
 export default MePage;

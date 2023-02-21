@@ -24,7 +24,7 @@ const LoginPage = () => {
       navigate('/me', { replace: true });
     }
     authOperations
-      .signup(value)
+      .login(value)
 
       .catch(console.log(Error));
   }, [value, navigate]);
