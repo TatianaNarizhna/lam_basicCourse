@@ -11,10 +11,12 @@ const token = {
   },
 };
 
-async function signup() {
+async function signup({ email, password }) {
   try {
+    console.log({ email, password });
     const response = await axios.post('/sign_up ');
-    // token.set(data.token);
+
+    // token.set(response.token);
     console.log(JSON.stringify(response.data));
   } catch ({ response }) {
     console.error(response.data.message);

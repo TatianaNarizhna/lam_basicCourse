@@ -1,68 +1,37 @@
-import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import authOperations from '../../auth/authOperation';
+import SignupForm from '../../modules/SignupForm/SignupForm';
 import s from './SignupPage.module.css';
 
 const SignupPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [value, setValue] = useState('');
 
-  const handleChange = ({ target: { name, value } }) => {
-    switch (name) {
-      case 'email':
-        return setEmail(value);
+  const navigate = useNavigate();
 
-      case 'password':
-        return setPassword(value);
+  const onSignupSubmit = value => {
+    setValue(value);
+  };
 
-      default:
-        return;
+  useEffect(() => {
+    if (value === '') {
+      return;
     }
-  };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+    console.log(value);
 
-    authOperations.signup({ email, password });
-    setEmail('');
-    setPassword('');
-  };
+    if (value) {
+      navigate('/me', { replace: true });
+    }
+    authOperations
+      .signup(value)
+
+      .catch(console.log(Error));
+  }, [value, navigate]);
 
   return (
     <div className={s.RegisterContainer}>
-      <h2 className={s.title}>Signup Page</h2>
-
-      <form onSubmit={handleSubmit} className={s.form} autoComplete="off">
-        <div className="mb-3">
-          <label className={s.label} />
-          Email
-          <input
-            type="email"
-            name="email"
-            value={email}
-            className={s.form_control}
-            placeholder="name@example.com"
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className={s.label} />
-          Password
-          <input
-            type="password"
-            name="password"
-            value={password}
-            className={s.form_control}
-            placeholder="more then 5 symbols"
-            onChange={handleChange}
-          />
-        </div>
-
-        <Button type="submit" variant="contained">
-          Signup
-        </Button>
-      </form>
+      <SignupForm onSubmit={onSignupSubmit} />
     </div>
   );
 };
