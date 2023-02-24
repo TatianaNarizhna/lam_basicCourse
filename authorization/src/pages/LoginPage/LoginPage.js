@@ -9,7 +9,6 @@ import s from './LoginPage.module.css';
 
 const LoginPage = () => {
   const [value, setValue] = useState('');
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
@@ -28,18 +27,20 @@ const LoginPage = () => {
       .then(res => {
         localStorage.setItem('access_token', res.access_token);
         localStorage.setItem('refresh_token', res.refresh_token);
+        navigate('/me', { replace: true });
       })
       .catch(console.log(Error));
 
     setIsLoggedIn(true);
-    if (isLoggedIn) {
-      navigate('/me', { replace: true });
-    }
+    // if (isLoggedIn) {
+    //   navigate('/me', { replace: true });
+    // }
   }, [value, navigate, isLoggedIn]);
 
   return (
     <div className={s.RegisterContainer}>
-      {isLoggedIn ? <MePage /> : <Navbar />}
+      <Navbar />
+      {/* {isLoggedIn ? <MePage /> : <Navbar />} */}
       <LoginForm onSubmit={onSignupSubmit} />
     </div>
   );

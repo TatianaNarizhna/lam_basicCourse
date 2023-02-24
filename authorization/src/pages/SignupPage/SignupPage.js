@@ -8,7 +8,7 @@ import s from './SignupPage.module.css';
 
 const SignupPage = () => {
   const [value, setValue] = useState('');
-  const [logged, setLogged] = useState(false);
+  // const [logged, setLogged] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,18 +25,19 @@ const SignupPage = () => {
 
     authOperations
       .signup(value)
-      .then(res => setLogged(res.status))
+      .then(res => console.log(res))
       .catch(console.log(Error));
 
+    // setLogged(true);
     // if (logged === 'Ok') {
     //   navigate('/me', { replace: true });
     //   // setLogged(true);
     // }
-  }, [value, navigate, logged]);
+  }, [value, navigate]);
 
   return (
     <div className={s.RegisterContainer}>
-      {logged ? <UserCreatedPage /> : <Navbar />}
+      <Navbar />
       <SignupForm onSubmit={onSignupSubmit} />
     </div>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './modules/Navbar/Navbar';
 import LoginPage from './pages/LoginPage/LoginPage';
 import MePage from './pages/MePage/MePage';
@@ -12,6 +12,7 @@ function App() {
     <BrowserRouter>
       {/* <Navbar /> */}
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/me" element={<MePage />} />
