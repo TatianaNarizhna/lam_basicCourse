@@ -1,4 +1,4 @@
-import Deadline from './components/Deadline/Deadline.js';
+// import Deadline from './components/Deadline/Deadline.js';
 
 const deadlineCalculate = (hoursRes, minRes) => {
   let startDayToEdit = new Date();

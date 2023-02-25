@@ -14,6 +14,24 @@ const setAuthHeader = access_token => {
 //   axios.defaults.headers.common.Authorization = '';
 // };
 
+// async function getUser() {
+//   const access_token = localStorage.getItem('access_token');
+//   console.log('access', access_token);
+//   try {
+//     const response = await axios.get('/me', {
+//       headers: {
+//         Authorization: `Bearer ${access_token}`,
+//       },
+//     });
+
+//     // console.log(response.data.body.message);
+//     return response.data.body;
+//     // setAuthHeader(response.data.body.access_token);
+//   } catch ({ response }) {
+//     console.error(response);
+//   }
+// }
+
 async function getUser() {
   const access_token = localStorage.getItem('access_token');
   console.log('access', access_token);
@@ -23,7 +41,6 @@ async function getUser() {
         Authorization: `Bearer ${access_token}`,
       },
     });
-
     // console.log(response.data.body.message);
     return response.data.body;
     // setAuthHeader(response.data.body.access_token);
@@ -56,6 +73,10 @@ async function login({ email, password }) {
     console.error(response.data.message);
   }
 }
+
+const Service = axios.create({
+  baseURL: 'http://142.93.134.108:1111',
+});
 
 async function refreshToken() {
   const refresh_token = localStorage.getItem('refresh_token');

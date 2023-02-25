@@ -1,9 +1,9 @@
-import axios from 'axios';
-import authOperations from './authOperation';
+// import axios from 'axios';
+// import authOperations from './authOperation';
 
-const Service = axios.create({
-  baseURL: 'http://142.93.134.108:1111',
-});
+// const Service = axios.create({
+//   baseURL: 'http://142.93.134.108:1111',
+// });
 
 // Service.interceptors.request.use(
 //   config => {
@@ -18,43 +18,44 @@ const Service = axios.create({
 //   },
 // );
 
-Service.interceptors.response.use(
-  response => {
-    return response;
-  },
-  error => {
-    let originalRequest = error.config;
-    let refresh_token = localStorage.getItem('refresh_token');
+// Service.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   error => {
+//     let originalRequest = error.config;
+//     console.log(originalRequest);
+//     let refresh_token = localStorage.getItem('refresh_token');
 
-    if (
-      refresh_token &&
-      error.response.statusCode === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      return authOperations
-        .refreshToken()
-        .then(res => {
-          if (res.statusCode === 200) {
-            localStorage.setItem('access_token', res.data.access_token);
-            localStorage.setItem('refresh_token', res.data.refresh_token);
+//     if (
+//       refresh_token &&
+//       error.response.statusCode === 401 &&
+//       !originalRequest._retry
+//     ) {
+//       originalRequest._retry = true;
+//       return authOperations
+//         .refreshToken()
+//         .then(res => {
+//           if (res.statusCode === 200) {
+//             localStorage.setItem('access_token', res.data.access_token);
+//             localStorage.setItem('refresh_token', res.data.refresh_token);
 
-            originalRequest.headers[
-              'Authorization'
-            ] = `Bearer ${res.data.body.access_token}`;
+//             originalRequest.headers[
+//               'Authorization'
+//             ] = `Bearer ${res.data.body.access_token}`;
 
-            return axios(originalRequest);
-          }
-        })
-        .catch(() => {
-          localStorage.clear();
-        });
-    }
-    return Promise.reject(error.response || error.message);
-  },
-);
+//             return axios(originalRequest);
+//           }
+//         })
+//         .catch(() => {
+//           localStorage.clear();
+//         });
+//     }
+//     return Promise.reject(error.response || error.message);
+//   },
+// );
 
-export default Service;
+// export default Service;
 
 // const userStatus = localStorage.getItem('status');
 
@@ -206,3 +207,98 @@ export default Service;
 //     return Promise.reject(error);
 //   },
 // );
+
+// -------------------------
+
+// const instance = axios.create({
+//   baseURL: 'http://142.93.134.108:1111',
+// });
+
+// instance.interceptors.request.use(
+//   config => {
+//     const access_token = localStorage.getItem('access_token');
+//     if (access_token) {
+//       config.headers.common = {
+//         Authorization: `Bearer ${access_token}`,
+//       };
+//     }
+//     return config;
+//   },
+//   error => {
+//     Promise.reject(error.response || error.message);
+//   },
+// );
+
+// instance.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   async error => {
+//     let originalRequest = error.config;
+//     console.log(originalRequest);
+
+//     if (error.response.statusCode === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+//       let refresh_token = localStorage.getItem('refresh_token');
+
+//       if (refresh_token) {
+//         try {
+//           const response = await axios.post(
+//             'http://142.93.134.108:1111/refresh',
+//             {
+//               Authorization: `Bearer ${refresh_token}`,
+//             },
+//           );
+//           localStorage.setItem('access_token', response.data.body.access_token);
+//           originalRequest.headers.common = {
+//             Authorization: `Bearer ${response.data.body.access_token}`,
+//           };
+//           return axios(originalRequest);
+//         } catch (error) {
+//           console.error(error);
+//         }
+//       }
+//     }
+//     return Promise.reject(error.response || error.message);
+//   },
+// );
+
+// --------------
+// axios.interceptors.response.use(
+//     response => {
+//       return response;
+//     },
+//     async error => {
+//       const originalRequest = error.config;
+//       if (error.response.statusCode === 401 && !originalRequest._retry) {
+//         originalRequest._retry = true;
+//         const refresh_token = localStorage.getItem('refresh_token');
+//         if (refresh_token) {
+//           try {
+//             const response = await axios({
+//               url: 'http://142.93.134.108:1111/refresh',
+//               method: 'post',
+//               headers: {
+//                 Authorization: `Bearer ${refresh_token}`,
+//               },
+//             });
+//             localStorage.setItem(
+//               'access_token',
+//               response.data.body.access_token,
+//             );
+//             originalRequest.headers[
+//               'Authorization'
+//             ] = `Bearer ${response.data.body.access_token}`;
+
+//             return axios(originalRequest);
+//           } catch (error) {
+//             console.error(error);
+//             // Redirect to login page
+//           }
+//         } else {
+//           // Redirect to login page
+//         }
+//       }
+//       return Promise.reject(error);
+//     },
+//   );

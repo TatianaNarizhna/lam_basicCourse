@@ -22,7 +22,6 @@ export default function App() {
   const priceOfOneSym = useRef(0);
   const minRate = useRef(0);
 
-  console.log(userData);
   const onFormDataReceive = data => {
     const formdataResult = {
       service: data.service,

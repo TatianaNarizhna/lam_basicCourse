@@ -3,11 +3,7 @@ import axios from 'axios';
 import authOperations from '../../auth/authOperation';
 // import '../../auth/catchFetch';
 // import inter from '../../auth/catchFetch';
-import Service from '../../auth/catchFetch';
-
-const instance = axios.create({
-  baseURL: 'http://142.93.134.108:1111',
-});
+// import Service from '../../auth/catchFetch';
 
 const MePage = () => {
   const [loading, setLoading] = useState(true);
@@ -16,22 +12,21 @@ const MePage = () => {
 
   console.log();
 
+  const status = localStorage.getItem('status');
+
   useEffect(() => {
     // console.log(value);
-    authOperations
-      .getUser()
-      .then(res => {
-        // console.log(res);
-        if (res.message === 'token is valid') {
-          console.log('1', res.message);
-          setLoading(false);
-          return;
-        }
-        localStorage.setItem('status', res.message);
-        // inter(res);
-        Service();
-      })
-      .catch(console.log(Error));
+    authOperations.getUser().then(res => {
+      // console.log(res);
+      if (res.message === 'token is valid') {
+        console.log('1', res.message);
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem('status', res.message);
+    });
+
+    // .catch(console.log(Error));
   }, []);
 
   // useEffect(() => {
