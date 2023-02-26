@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import authOperations from '../../auth/authOperation';
-// import '../../auth/catchFetch';
+import instance from '../../auth/catchFetch';
+import '../../auth/catchFetch';
 // import inter from '../../auth/catchFetch';
 // import Service from '../../auth/catchFetch';
+
+console.log(instance);
 
 const MePage = () => {
   const [loading, setLoading] = useState(true);
@@ -16,17 +19,19 @@ const MePage = () => {
 
   useEffect(() => {
     // console.log(value);
-    authOperations.getUser().then(res => {
-      // console.log(res);
-      if (res.message === 'token is valid') {
-        console.log('1', res.message);
-        setLoading(false);
-        return;
-      }
-      localStorage.setItem('status', res.message);
-    });
+    authOperations
+      .getUser()
+      .then(res => {
+        // console.log(res);
+        if (res.message === 'token is valid') {
+          console.log('1', res.message);
+          setLoading(false);
+          return;
+        }
+        localStorage.setItem('status', res.message);
+      })
 
-    // .catch(console.log(Error));
+      .catch(res => console.log('exp', res));
   }, []);
 
   // useEffect(() => {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import instance from './catchFetch';
 
 const access_token = localStorage.getItem('access_token');
 const refresh_token = localStorage.getItem('refresh_token');
@@ -32,6 +33,8 @@ const setAuthHeader = access_token => {
 //   }
 // }
 
+const instance = axios.create();
+
 async function getUser() {
   const access_token = localStorage.getItem('access_token');
   console.log('access', access_token);
@@ -41,6 +44,37 @@ async function getUser() {
         Authorization: `Bearer ${access_token}`,
       },
     });
+
+    instance.interceptors.response.use(
+      function (config) {
+        const refresh_token = localStorage.getItem('refresh_token');
+        if (response.data.body.message === 'token expired') {
+          axios({
+            url: `http://142.93.134.108:1111/refresh`,
+            method: 'post',
+            headers: {
+              Authorization: `Bearer ${refresh_token}`,
+            },
+          }).then(response => {
+            if (response.data.body.message === 'token expired') {
+              localStorage.setItem(
+                'access_token',
+                response.data.body.access_token,
+              );
+              localStorage.setItem(
+                'refresh_token',
+                response.data.body.refresh_token,
+              );
+            }
+          });
+        }
+        return config;
+      },
+      function (error) {
+        return Promise.reject(error);
+      },
+    );
+
     // console.log(response.data.body.message);
     return response.data.body;
     // setAuthHeader(response.data.body.access_token);
@@ -73,10 +107,6 @@ async function login({ email, password }) {
     console.error(response.data.message);
   }
 }
-
-const Service = axios.create({
-  baseURL: 'http://142.93.134.108:1111',
-});
 
 async function refreshToken() {
   const refresh_token = localStorage.getItem('refresh_token');

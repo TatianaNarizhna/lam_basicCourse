@@ -1,5 +1,60 @@
-// import axios from 'axios';
+import axios from 'axios';
 // import authOperations from './authOperation';
+
+const instance = axios.create({
+  baseURL: 'http://142.93.134.108:1111',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+instance.interceptors.request.use(
+  config => {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+      config.headers['x-access-token'] = access_token; // for Node.js Express back-end
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
+
+instance.interceptors.response.use(
+  res => {
+    return res;
+  },
+  async err => {
+    const originalConfig = err.config;
+    console.log('inter');
+
+    // Access Token was expired
+    if (err.response.statusCode === 401 && !originalConfig._retry) {
+      originalConfig._retry = true;
+      const refresh_token = localStorage.getItem('refresh_token');
+      try {
+        const rs = await instance.post('/refresh', {
+          refresh_token: refresh_token,
+        });
+        originalConfig.headers[
+          'Authorization'
+        ] = `Bearer ${rs.data.access_token}`;
+        localStorage.setItem('access_token', rs.data.body.access_token);
+
+        return instance(originalConfig);
+      } catch (_error) {
+        return Promise.reject(_error);
+      }
+    }
+
+    return Promise.reject(err);
+  },
+);
+
+export default instance;
+
+// --------------------------------------------------------------------
 
 // const Service = axios.create({
 //   baseURL: 'http://142.93.134.108:1111',
