@@ -25,16 +25,12 @@ const LoginPage = () => {
     authOperations
       .login(value)
       .then(res => {
-        localStorage.setItem('access_token', res.access_token);
-        localStorage.setItem('refresh_token', res.refresh_token);
+        console.log(res);
         navigate('/me', { replace: true });
       })
       .catch(console.log(Error));
 
     setIsLoggedIn(true);
-    // if (isLoggedIn) {
-    //   navigate('/me', { replace: true });
-    // }
   }, [value, navigate, isLoggedIn]);
 
   return (
