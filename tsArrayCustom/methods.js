@@ -49,36 +49,107 @@ Array.prototype.chunked = function (array, size) {
 };
 
 Array.prototype.distinctBy = function (array) {
+  let set = new Set(array);
+  return set;
+};
+
+Array.prototype.filter = function (array, predicate) {
   let result = [];
-  let map = new Map();
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    const key = [element];
-    console.log(key);
-
-    if (map.has(key)) {
-      return;
+    if (predicate(element)) {
+      result.push(element);
     }
-    map.set(key);
-    // result.push(element);
   }
-  return map;
+  return result;
+};
+
+Array.prototype.filterIndexed = function (arr, callback) {
+  const result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const element = arr[i];
+    if (callback(element, i, arr)) {
+      result.push([element, i]);
+    }
+  }
+
+  return result;
+};
+
+Array.prototype.filterNot = function (array, predicate) {
+  const result = [];
+
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+
+    if (!predicate(element)) {
+      result.push(element);
+    }
+  }
+
+  return result;
+};
+
+Array.prototype.find = function (array, predicate) {
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+
+    if (predicate(element)) {
+      return element;
+    }
+  }
+};
+
+Array.prototype.findLast = function (array, predicate) {
+  for (let index = array.length; index >= 0; index--) {
+    const element = array[index];
+
+    if (predicate(element)) {
+      return element;
+    }
+  }
+  return null;
+};
+
+Array.prototype.flatten = function (array) {
+  let result = array.flat(Infinity);
+
+  return result;
 };
 
 // console.log(Array.prototype.associateBy(['fff', 'ggg', 'rrr']));
 
 const predicate = x => x.length > 1;
+const filterPredicate = x => x > 3;
 const arr = ['moon', 'sun', 'star', 'cloud', 'planet'];
 const array = [1, 2, 3, 4, 5];
-const arrayDistinctBy = [
-  { name: 'book' },
-  { name: 'pencil' },
-  { name: 'pen' },
-  { name: 'laptop' },
-];
+const arrayDistinctBy = ['book', 'pencil', 'pen', 'laptop', 'book', 'pen'];
+const arrFlatten = [1, [2, 3], [4, [5, 6]]];
+
 console.log(arr.associateBy(arr));
 console.log(arr.all(arr, predicate));
 console.log(arr.any(arr, predicate));
 console.log(arr.average(array));
 console.log(arr.chunked(arr, 2));
 console.log(arrayDistinctBy.distinctBy(arrayDistinctBy));
+console.log(arr.filter(array, filterPredicate));
+console.log(array.filterIndexed(array, filterPredicate));
+console.log(array.filterNot(array, filterPredicate));
+console.log(array.find(array, filterPredicate));
+console.log(array.findLast(array, filterPredicate));
+console.log(arrFlatten.flatten(arrFlatten));
+
+// Array.prototype.flatten = function (array) {
+//   let result = [];
+
+//   for (let index = 0; index < array.length; index++) {
+//     const element = array[index];
+//     if (Array.isArray(element)) {
+//       return flatten(element);
+//     } else {
+//       result.push(element);
+//     }
+//   }
+//   return result;
+// };
