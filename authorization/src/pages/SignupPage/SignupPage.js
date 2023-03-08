@@ -30,8 +30,9 @@ const SignupPage = () => {
 
     // setLogged(true);
     // if (logged === 'Ok') {
-    //   navigate('/me', { replace: true });
-    //   // setLogged(true);
+    //   mySuccess();
+    //   // navigate('/me', { replace: true });
+    //   // // setLogged(true);
     // }
   }, [value, navigate]);
 

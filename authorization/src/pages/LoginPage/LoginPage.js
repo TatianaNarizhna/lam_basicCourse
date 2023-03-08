@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authOperations from '../../auth/authOperation';
-import MePage from '../MePage/MePage';
 import Navbar from '../../modules/Navbar/Navbar';
 import LoginForm from '../../modules/LoginForm/LoginForm';
+import Spinner from '../../modules/Loader/Loader';
 
 import s from './LoginPage.module.css';
 
@@ -36,7 +36,8 @@ const LoginPage = () => {
   return (
     <div className={s.RegisterContainer}>
       <Navbar />
-      {/* {isLoggedIn ? <MePage /> : <Navbar />} */}
+      {isLoggedIn && <Spinner />}
+
       <LoginForm onSubmit={onSignupSubmit} />
     </div>
   );

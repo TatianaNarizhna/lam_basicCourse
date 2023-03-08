@@ -1,3 +1,5 @@
+import { success } from '@pnotify/core';
+import '@pnotify/core/dist/BrightTheme.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
@@ -25,8 +27,10 @@ const SignupForm = ({ onSubmit }) => {
 
     onSubmit({ email, password });
 
-    setEmail('');
-    setPassword('');
+    success({
+      text: 'You have registered successfully!',
+      delay: 500,
+    });
   };
 
   return (

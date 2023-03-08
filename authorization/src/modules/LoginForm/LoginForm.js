@@ -23,9 +23,6 @@ const LoginForm = ({ onSubmit }) => {
     e.preventDefault();
 
     onSubmit({ email, password });
-
-    setEmail('');
-    setPassword('');
   };
 
   return (
