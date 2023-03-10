@@ -13,6 +13,7 @@ function uniqueValues(filesArr) {
     const filePath = path.join(__dirname, file);
     const array = fs.readFileSync(filePath, 'utf-8').toString().split('\n');
 
+    // for each
     for (const key in array) {
       uniqueValue.add(array[key]);
     }
@@ -27,6 +28,7 @@ function existInAllFiles(filesArr) {
     const array = fs.readFileSync(filePath, 'utf-8').toString().split('\n');
     fullValuesArray.push(array);
   });
+  // переписати без бібл
   let existValues = _.intersection.apply(_, fullValuesArray);
 
   return `Exist in all files: ${existValues.length}`;

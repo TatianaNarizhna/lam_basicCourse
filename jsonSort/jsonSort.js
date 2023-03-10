@@ -1,5 +1,10 @@
 import axios from 'axios';
+import { get } from 'lodash';
 
+// await Promise.all - масив функцій
+// сщтіе test = async(url) => {
+//   const {data:res} = await get(url)
+// }
 const ulrs = [
   'https://jsonbase.com/lambdajson_type1/793',
   'https://jsonbase.com/lambdajson_type1/955',

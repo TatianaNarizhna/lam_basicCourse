@@ -2,39 +2,42 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import s from './Deadline.module.css';
 
-function Deadline({ data }) {
-  const { textField, fileContent, language } = data;
+function Deadline({ data, price, language }) {
+  const { textField, fileContent } = data;
+  // console.log(data);
+  // console.log(textField);
+  console.log(fileContent);
 
   const [deadline, setDeadline] = useState('');
 
   const editingUkrRusSign = 1333;
   const editingEngSign = 333;
 
+  let langForEdit;
+
+  switch (language) {
+    case 'Англійська':
+      langForEdit = editingEngSign;
+      break;
+
+    case 'Українська':
+      langForEdit = editingUkrRusSign;
+      break;
+
+    case 'Російська':
+      langForEdit = editingUkrRusSign;
+      break;
+
+    default:
+      break;
+  }
+
   const timeCalculate = useCallback(() => {
+    let timeForWork;
     const hour = 1000 * 60 * 60;
     let getOneHour = parseInt((hour / (1000 * 60 * 60)) % 24);
     const halfAnHour30 = 1000 * 60 * 30;
     let getHalfAnHour = parseInt((halfAnHour30 / (1000 * 60)) % 60);
-
-    let timeForWork;
-    let langForEdit;
-
-    switch (language) {
-      case 'Англійська':
-        langForEdit = editingEngSign;
-        break;
-
-      case 'Українська':
-        langForEdit = editingUkrRusSign;
-        break;
-
-      case 'Російська':
-        langForEdit = editingUkrRusSign;
-        break;
-
-      default:
-        break;
-    }
 
     if (textField) {
       timeForWork = (textField / langForEdit).toFixed(2);
@@ -58,12 +61,13 @@ function Deadline({ data }) {
       ttlMinRes = ttlMinRes - 60;
     }
 
-    const calculation = deadlineCalculate(timeForWork, ttlMinRes);
-
-    return ` hours: ${timeForWork}, mins: ${ttlMinRes} \n Be ready: ${calculation.toLocaleString(
-      'en-GB',
-    )}`;
-  }, [fileContent, language, textField]);
+    if (textField || fileContent) {
+      const calculation = deadlineCalculate(timeForWork, ttlMinRes);
+      return ` hours: ${timeForWork}, mins: ${ttlMinRes} \n Be ready: ${calculation.toLocaleString(
+        'en-GB',
+      )}`;
+    }
+  }, [fileContent, langForEdit, textField]);
 
   const deadlineCalculate = (hoursRes, minRes) => {
     let startDayToEdit = new Date();
@@ -83,6 +87,10 @@ function Deadline({ data }) {
         : 0;
 
     let leftHours = hoursRes % hoursPerDay;
+    // console.log(leftHours);
+    let leftHoursToEndDay = endWorkingHours - startTimeToEdit;
+    // console.log(leftHoursToEndDay);
+    let extraTime = Math.abs(endWorkingHours - (startTimeToEdit + hoursRes));
 
     startDayToEdit.setDate(startDayToEdit.getDate() + daysForEdit);
     // console.log(startDayToEdit);
@@ -95,36 +103,37 @@ function Deadline({ data }) {
     }
 
     if (startTimeToEdit >= endWorkingHours) {
-      startDayToEdit.setDate(getDate + daysForEdit);
+      startDayToEdit.setDate(getDate + 1);
       startDayToEdit.setHours(startWorkingHours + leftHours);
       startDayToEdit.setMinutes(startWorkingMinutes + minRes);
-      // console.log('1');
+      console.log('1');
     } else if (startTimeToEdit < startWorkingHours) {
       startDayToEdit.setHours(startWorkingHours + leftHours);
       startDayToEdit.setMinutes(startWorkingMinutes + minRes);
-      // console.log('2');
+      console.log('2');
     } else if (startTimeToEdit < endWorkingHours) {
       startDayToEdit.setHours(startTimeToEdit + leftHours);
-      // console.log('3');
+      console.log('3');
+      if (startDayToEdit.getHours() > endWorkingHours) {
+        startDayToEdit.setDate(getDate + 1);
+        startDayToEdit.setHours(startWorkingHours + extraTime);
+      }
     }
-
-    console.log(startDayToEdit);
-
     return startDayToEdit;
   };
 
-  const finalRes = timeCalculate();
-
   useEffect(() => {
-    setDeadline(finalRes);
-  }, [finalRes]);
+    if (price) {
+      const finalRes = timeCalculate();
+      console.log(finalRes);
+      setDeadline(finalRes);
+    }
+  }, [price, textField, timeCalculate, fileContent]);
 
   // console.log(timeCalculate());
-
-  console.log(finalRes);
   return (
     <div>
-      <div className={s.line}>Need time: {language && deadline}</div>
+      <div className={s.line}>Need time: {price && deadline}</div>
     </div>
   );
 }
